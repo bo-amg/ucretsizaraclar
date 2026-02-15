@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -100,14 +99,14 @@ const HomePage: React.FC = () => {
     <div className="bg-slate-50 min-h-screen">
       <section className="bg-white border-b border-slate-200 py-16 px-4 text-center">
         <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tighter leading-tight">
-          Tam <span className="text-indigo-600">80+ Ücretsiz</span> <br className="hidden md:block"/> Dijital Araç.
+          İşlerinizi Kolaylaştıran <br className="hidden md:block"/> <span className="text-indigo-600">Ücretsiz Dijital</span> Araçlar.
         </h1>
-        <h2 className="text-slate-500 text-lg max-w-2xl mx-auto mb-10">İhtiyacınız olan her şey tek bir platformda, anında elinizin altında.</h2>
+        <h2 className="text-slate-500 text-lg max-w-2xl mx-auto mb-10">Maaş hesaplama, vergi robotları ve yapay zeka araçları ile işlerinizi saniyeler içinde halledin.</h2>
         <div className="max-w-2xl mx-auto relative group">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={24} />
           <input 
             type="text"
-            placeholder="Ne yapmak istiyorsunuz? (Örn: Maaş, LGS Puan, Takdir Teşekkür, OBP)"
+            placeholder="Ne yapmak istiyorsunuz? (Örn: Maaş, Vergi, CV Oluşturma, OBP)"
             className="w-full pl-16 pr-8 py-6 bg-slate-50 border-2 border-slate-100 rounded-[2rem] focus:bg-white focus:border-indigo-600 outline-none transition-all shadow-sm text-lg font-medium"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -145,7 +144,7 @@ const HomePage: React.FC = () => {
             </h2>
             <div className="prose prose-slate prose-sm max-w-none text-slate-500 space-y-6 leading-relaxed">
               <p>
-                <strong>ucretsizaraclar.com.tr</strong>, Türkiye'nin en güncel <strong>maaş hesaplama</strong>, <strong>LGS/YKS puan hesaplama</strong>, <strong>Takdir Teşekkür sorgulama</strong> ve <strong>hukuk maliyet analiz</strong> araçlarını barındırır. Finansal, eğitim ve yasal kararlarınızı alırken yasal mevzuata uygun, güvenilir ve hızlı sonuçlar elde etmenizi sağlıyoruz.
+                <strong>ucretsizaraclar.com.tr</strong>, Türkiye'nin en güncel <strong>maaş hesaplama</strong>, <strong>gümrük vergisi robotu</strong>, <strong>LGS/YKS puan hesaplama</strong> ve <strong>yapay zeka içerik üretme</strong> araçlarını barındırır. Finansal, eğitim ve dijital kararlarınızı alırken güncel mevzuata uygun, güvenilir ve hızlı sonuçlar elde etmenizi sağlıyoruz.
               </p>
             </div>
           </div>

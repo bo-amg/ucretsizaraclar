@@ -9,7 +9,7 @@ import {
   Mail, MessageSquare, PenTool, Braces, Layers, Maximize, MousePointer2, Info,
   Sun, Wind, HardDrive, Square, Box, UserCircle, Layout, FileUp, FileDown, 
   Settings, Terminal, Fingerprint, Eye, EyeOff, Scissors, Edit3, HeartPulse,
-  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck, Coins, Gavel, Key, History, GraduationCap, Award, Target
+  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck, Coins, Gavel, Key, History, GraduationCap, Award, Target, Bitcoin
 } from 'lucide-react';
 import { ToolCategory, ToolItem } from '../types';
 import AdUnit from '../components/AdUnit';

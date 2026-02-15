@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -20,7 +19,8 @@ const ToolCard: React.FC<ToolItem> = ({ title, description, icon, category, path
     className="group relative bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col"
   >
     <div className={`inline-flex p-3 rounded-xl mb-4 ${color} bg-opacity-10 transition-transform group-hover:scale-110`}>
-      {React.cloneElement(icon as React.ReactElement, { size: 24 })}
+      {/* TypeScript hatasını gidermek için as React.ReactElement<any> cast eklendi */}
+      {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement<any>, { size: 24 }) : icon}
     </div>
     <div className="absolute top-4 right-4 text-[10px] font-bold px-2 py-1 rounded-full bg-slate-100 text-slate-500 uppercase">
       {category}
@@ -76,7 +76,6 @@ const HomePage: React.FC = () => {
     { id: 'url-enc', title: 'URL Encode/Decode', description: 'URL güvenli hale getirin.', icon: <Globe />, category: ToolCategory.DEV, path: '/url-encoder', color: 'text-blue-400', keywords: ['url', 'encode', 'web'] },
     { id: 'md5', title: 'MD5 Hash', description: 'Veri bütünlüğü için Hash.', icon: <Terminal />, category: ToolCategory.DEV, path: '/md5-gen', color: 'text-red-400', keywords: ['md5', 'hash', 'şifre'] },
     { id: 'sha256', title: 'SHA256 Hash', description: 'Güçlü şifreleme hash.', icon: <Terminal />, category: ToolCategory.DEV, path: '/sha256-gen', color: 'text-blue-500', keywords: ['sha', 'hash', 'güvenlik'] },
-    // Fix: Use Code2 instead of Code because Code is not imported from lucide-react in this file.
     { id: 'html-esc', title: 'HTML Escape', description: 'Karakterleri güvenli yapın.', icon: <Code2 />, category: ToolCategory.DEV, path: '/html-escape', color: 'text-orange-400', keywords: ['html', 'escape', 'web'] },
     { id: 'js-min', title: 'JS Minifier', description: 'Kod boyutunu küçültün.', icon: <FileCode />, category: ToolCategory.DEV, path: '/js-minifier', color: 'text-yellow-600', keywords: ['js', 'minify', 'hız'] },
     { id: 'css-min', title: 'CSS Minifier', description: 'CSS dosyalarını optimize et.', icon: <Layers />, category: ToolCategory.DEV, path: '/css-minifier', color: 'text-indigo-400', keywords: ['css', 'minify', 'tasarım'] },
@@ -126,7 +125,7 @@ const HomePage: React.FC = () => {
         <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tighter leading-tight">
           Tam <span className="text-indigo-600">80+ Ücretsiz</span> <br className="hidden md:block"/> Dijital Araç.
         </h1>
-        <p className="text-slate-500 text-lg max-w-2xl mx-auto mb-10">İhtiyacınız olan her şey tek bir platformda, anında elinizin altında.</p>
+        <h2 className="text-slate-500 text-lg max-w-2xl mx-auto mb-10">İhtiyacınız olan her şey tek bir platformda, anında elinizin altında.</h2>
         <div className="max-w-2xl mx-auto relative group">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={24} />
           <input 

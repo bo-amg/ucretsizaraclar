@@ -39,9 +39,11 @@ export const generateImage = async (prompt: string): Promise<string | null> => {
       contents: { parts: [{ text: prompt }] }
     });
     
-    // Iterate through parts to find the image part
-    for (const candidate of response.candidates || []) {
-      for (const part of candidate.content.parts) {
+    // Güvenli kontrol: candidates, content ve parts alanlarının varlığı doğrulanıyor
+    const candidates = response.candidates || [];
+    for (const candidate of candidates) {
+      const parts = candidate.content?.parts || [];
+      for (const part of parts) {
         if (part.inlineData) {
           return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
         }

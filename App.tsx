@@ -28,6 +28,8 @@ import LoanCalculator from './tools/LoanCalculator';
 import SavingsCalculator from './tools/SavingsCalculator';
 import SeveranceCalculator from './tools/SeveranceCalculator';
 import RealEstateCalculator from './tools/RealEstateCalculator';
+import RetirementCalculator from './tools/RetirementCalculator';
+import LegalCostCalculator from './tools/LegalCostCalculator';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,8 +47,8 @@ const App: React.FC = () => {
           <nav className="hidden md:flex space-x-6 text-sm font-bold text-slate-600">
             <Link to="/" className="hover:text-indigo-600 transition-colors">Ana Sayfa</Link>
             <a href="/#Yapay Zeka" className="hover:text-indigo-600 transition-colors">Yapay Zeka</a>
+            <a href="/#Ofis & Veri" className="hover:text-indigo-600 transition-colors">Finans</a>
             <a href="/#Dönüştürücüler" className="hover:text-indigo-600 transition-colors">Birimler</a>
-            <a href="/#Tasarım Araçları" className="hover:text-indigo-600 transition-colors">Tasarım</a>
           </nav>
           <button className="md:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X /> : <Menu />}
@@ -58,7 +60,7 @@ const App: React.FC = () => {
         <div className="md:hidden bg-white border-b border-slate-200 p-4 space-y-4 font-bold text-slate-600 animate-fade-in">
           <Link to="/" className="block" onClick={() => setIsMenuOpen(false)}>Ana Sayfa</Link>
           <a href="/#Yapay Zeka" className="block" onClick={() => setIsMenuOpen(false)}>Yapay Zeka</a>
-          <a href="/#Tasarım Araçları" className="block" onClick={() => setIsMenuOpen(false)}>Tasarım</a>
+          <a href="/#Ofis & Veri" className="block" onClick={() => setIsMenuOpen(false)}>Finans</a>
         </div>
       )}
 
@@ -84,6 +86,8 @@ const App: React.FC = () => {
           <Route path="/mevduat-hesaplama" element={<SavingsCalculator />} />
           <Route path="/tazminat-hesaplama" element={<SeveranceCalculator />} />
           <Route path="/tapu-harci" element={<RealEstateCalculator />} />
+          <Route path="/emeklilik-hesaplama" element={<RetirementCalculator />} />
+          <Route path="/dava-harci" element={<LegalCostCalculator />} />
           
           <Route path="/kdv-hesaplama" element={<GenericCalculator type="kdv" />} />
           <Route path="/yuzde-hesaplama" element={<GenericCalculator type="percent" />} />
@@ -154,7 +158,7 @@ const App: React.FC = () => {
               <ul className="space-y-3 text-slate-400 text-sm">
                 <li><Link to="/mevduat-hesaplama" className="hover:text-white transition-colors">Mevduat Getirisi</Link></li>
                 <li><Link to="/kredi-hesaplama" className="hover:text-white transition-colors">Kredi Hesaplama</Link></li>
-                <li><Link to="/tazminat-hesaplama" className="hover:text-white transition-colors">Tazminat Hesaplama</Link></li>
+                <li><Link to="/dava-harci" className="hover:text-white transition-colors">Dava Harcı Hesapla</Link></li>
                 <li><Link to="/bordro-hesaplama" className="hover:text-white transition-colors">Maaş Hesaplama 2026</Link></li>
                 <li><Link to="/gumruk-vergisi" className="hover:text-white transition-colors">Gümrük Vergisi Hesaplama</Link></li>
               </ul>

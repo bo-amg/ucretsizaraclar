@@ -42,13 +42,15 @@ const HomePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('Hepsi');
 
   const allTools: ToolItem[] = useMemo(() => [
-    // EN ÇOK KULLANILANLAR
+    // EN ÇOK KULLANILANLAR (SIRALAMA DÜZENLENDİ)
     { id: 'payroll', title: 'Maaş Hesaplama 2026', description: '2026 brütten nete maaş dökümü ve bordro simülatörü.', icon: <Receipt />, category: ToolCategory.OFFICE, path: '/bordro-hesaplama', color: 'text-indigo-600', keywords: ['2026 maaş hesaplama', 'bordro 2026', 'brüt net 2026', 'maaş robotu', 'vergi dilimi 2026'] },
     { id: 'gumruk', title: 'Gümrük Vergisi 2026', description: 'Şubat 2026 yeni gümrük yasasına uygun vergi hesaplayıcı.', icon: <Truck />, category: ToolCategory.OFFICE, path: '/gumruk-vergisi', color: 'text-indigo-600', keywords: ['gümrük vergisi', 'temu vergi', 'amazon gümrük', 'yurt dışı alışveriş', '2026 gümrük'] },
     { id: 'loan', title: 'Kredi Hesaplama 2026', description: 'Banka kredi taksidi, toplam faiz ve ödeme planı.', icon: <Landmark />, category: ToolCategory.OFFICE, path: '/kredi-hesaplama', color: 'text-indigo-600', keywords: ['kredi hesaplama', 'banka faiz', 'taksit hesapla', 'ihtiyaç kredisi', 'konut kredisi'] },
     { id: 'tazminat', title: 'Tazminat Hesaplama', description: 'Kıdem ve ihbar tazminatı haklarınızı 2026 tavan fiyatlarla hesaplayın.', icon: <Gavel />, category: ToolCategory.OFFICE, path: '/tazminat-hesaplama', color: 'text-blue-600', keywords: ['kıdem tazminatı', 'ihbar tazminatı', 'işten ayrılma', 'istifa hakları'] },
     { id: 'tapu', title: 'Tapu Harcı 2026', description: 'Gayrimenkul alım-satım harçlarını ve döner sermaye ücretlerini hesaplayın.', icon: <Key />, category: ToolCategory.OFFICE, path: '/tapu-harci', color: 'text-orange-600', keywords: ['tapu harcı', 'ev alım satım', 'emlak vergisi', 'harç hesapla'] },
     { id: 'savings', title: 'Mevduat Getirisi 2026', description: 'Banka mevduat faizi ve net getiri hesaplama robotu.', icon: <Coins />, category: ToolCategory.OFFICE, path: '/mevduat-hesaplama', color: 'text-emerald-600', keywords: ['mevduat faizi', 'vadeli hesap', 'getiri hesaplama', 'faiz hesapla', 'banka kazanç'] },
+    { id: 'retirement', title: 'Emeklilik Zamanı', description: 'Ne zaman emekli olacağınızı prim gün sayınıza göre hesaplayın.', icon: <HeartPulse />, category: ToolCategory.OFFICE, path: '/emeklilik-hesaplama', color: 'text-rose-600', keywords: ['emeklilik hesaplama', 'ne zaman emekli olurum', 'eyt hesaplama', 'prim günü'] },
+    { id: 'legal', title: 'Dava Harcı ve Masrafı', description: 'Dava açma maliyetlerini yasal tarifelere göre hesaplayın.', icon: <Scale />, category: ToolCategory.OFFICE, path: '/dava-harci', color: 'text-slate-600', keywords: ['dava harcı', 'mahkeme masrafı', 'harç hesaplama', 'bilirkişi ücreti', 'gider avansı'] },
 
     // YAPAY ZEKA
     { id: 'cv-gen', title: 'AI CV Oluşturucu', description: 'Profesyonel özgeçmiş hazırlayın.', icon: <UserCircle />, category: ToolCategory.AI, path: '/cv-gen', color: 'text-indigo-600', keywords: ['cv', 'iş', 'ai', 'kariyer', 'özgeçmiş'] },
@@ -101,7 +103,7 @@ const HomePage: React.FC = () => {
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={24} />
           <input 
             type="text"
-            placeholder="Ne yapmak istiyorsunuz? (Örn: Maaş, KDV, Kredi, Tazminat)"
+            placeholder="Ne yapmak istiyorsunuz? (Örn: Maaş, Emeklilik, Kredi, Dava Harcı)"
             className="w-full pl-16 pr-8 py-6 bg-slate-50 border-2 border-slate-100 rounded-[2rem] focus:bg-white focus:border-indigo-600 outline-none transition-all shadow-sm text-lg font-medium"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -139,7 +141,7 @@ const HomePage: React.FC = () => {
             </h2>
             <div className="prose prose-slate prose-sm max-w-none text-slate-500 space-y-6 leading-relaxed">
               <p>
-                <strong>ucretsizaraclar.com.tr</strong>, Türkiye'nin en güncel <strong>maaş hesaplama</strong>, <strong>gümrük vergisi robotu</strong> ve <strong>kredi analiz</strong> araçlarını barındırır. Finansal kararlarınızı alırken yasal mevzuata uygun, güvenilir ve hızlı sonuçlar elde etmenizi sağlıyoruz.
+                <strong>ucretsizaraclar.com.tr</strong>, Türkiye'nin en güncel <strong>maaş hesaplama</strong>, <strong>emeklilik robotu</strong> ve <strong>hukuk maliyet analiz</strong> araçlarını barındırır. Finansal ve yasal kararlarınızı alırken yasal mevzuata uygun, güvenilir ve hızlı sonuçlar elde etmenizi sağlıyoruz.
               </p>
             </div>
           </div>

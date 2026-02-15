@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -8,7 +9,7 @@ import {
   Mail, MessageSquare, PenTool, Braces, Layers, Maximize, MousePointer2, Info,
   Sun, Wind, HardDrive, Square, Box, UserCircle, Layout, FileUp, FileDown, 
   Settings, Terminal, Fingerprint, Eye, EyeOff, Scissors, Edit3, HeartPulse,
-  Droplet, Gauge, Activity, Cpu, BrainCircuit
+  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck
 } from 'lucide-react';
 import { ToolCategory, ToolItem } from '../types';
 import AdUnit from '../components/AdUnit';
@@ -19,7 +20,6 @@ const ToolCard: React.FC<ToolItem> = ({ title, description, icon, category, path
     className="group relative bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col"
   >
     <div className={`inline-flex p-3 rounded-xl mb-4 ${color} bg-opacity-10 transition-transform group-hover:scale-110`}>
-      {/* TypeScript hatasını gidermek için as React.ReactElement<any> cast eklendi */}
       {React.isValidElement(icon) ? React.cloneElement(icon as React.ReactElement<any>, { size: 24 }) : icon}
     </div>
     <div className="absolute top-4 right-4 text-[10px] font-bold px-2 py-1 rounded-full bg-slate-100 text-slate-500 uppercase">
@@ -42,7 +42,11 @@ const HomePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('Hepsi');
 
   const allTools: ToolItem[] = useMemo(() => [
-    // YAPAY ZEKA (1-15)
+    // EN ÇOK KULLANILANLAR / GÜNCEL MEVZUAT (BAŞA TAŞINDI)
+    { id: 'payroll', title: 'Maaş Hesaplama 2026', description: '2026 brütten nete maaş dökümü ve bordro simülatörü.', icon: <Receipt />, category: ToolCategory.OFFICE, path: '/bordro-hesaplama', color: 'text-indigo-600', keywords: ['2026 maaş hesaplama', 'bordro 2026', 'brüt net 2026', 'maaş robotu', 'vergi dilimi 2026'] },
+    { id: 'gumruk', title: 'Gümrük Vergisi 2026', description: 'Şubat 2026 yeni gümrük yasasına uygun vergi hesaplayıcı.', icon: <Truck />, category: ToolCategory.OFFICE, path: '/gumruk-vergisi', color: 'text-indigo-600', keywords: ['gümrük vergisi', 'temu vergi', 'amazon gümrük', 'yurt dışı alışveriş', '2026 gümrük'] },
+
+    // YAPAY ZEKA
     { id: 'cv-gen', title: 'AI CV Oluşturucu', description: 'Profesyonel özgeçmiş hazırlayın.', icon: <UserCircle />, category: ToolCategory.AI, path: '/cv-gen', color: 'text-indigo-600', keywords: ['cv', 'iş', 'ai', 'kariyer', 'özgeçmiş'] },
     { id: 'summarizer', title: 'AI Metin Özetleme', description: 'Uzun makaleleri özetleyin.', icon: <FileText />, category: ToolCategory.AI, path: '/summarizer', color: 'text-indigo-600', keywords: ['ai', 'özet', 'text'] },
     { id: 'image-gen', title: 'AI Görsel Oluşturma', description: 'Yapay zeka ile görsel üretin.', icon: <ImageIcon />, category: ToolCategory.AI, path: '/image-gen', color: 'text-pink-600', keywords: ['resim', 'ai', 'art'] },
@@ -54,13 +58,7 @@ const HomePage: React.FC = () => {
     { id: 'ai-email', title: 'AI E-Posta Yazıcı', description: 'Etkileyici mailler yazın.', icon: <Mail />, category: ToolCategory.AI, path: '/ai-email', color: 'text-cyan-600', keywords: ['mail', 'ai', 'eposta'] },
     { id: 'ai-story', title: 'AI Hikaye Yazıcı', description: 'Yaratıcı hikayeler üretin.', icon: <Zap />, category: ToolCategory.AI, path: '/ai-story', color: 'text-amber-500', keywords: ['hikaye', 'ai', 'kitap'] },
 
-    // METİN ARAÇLARI (16-30)
-    { id: 'text-tools', title: 'Harf Dönüştürücü', description: 'Büyük/küçük harf işlemleri.', icon: <Type />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-blue-600', keywords: ['metin', 'harf', 'ters'] },
-    { id: 'word-counter', title: 'Kelime Sayacı', description: 'Metin analizi ve istatistik.', icon: <Hash />, category: ToolCategory.TEXT, path: '/word-counter', color: 'text-indigo-500', keywords: ['kelime', 'sayacı', 'karakter'] },
-    { id: 'lorem', title: 'Lorem Ipsum', description: 'Taslak metin oluşturucu.', icon: <Edit3 />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-slate-400', keywords: ['lorem', 'ipsum', 'taslak'] },
-    { id: 'slug-gen', title: 'URL Slug Gen', description: 'SEO uyumlu URL oluşturun.', icon: <Globe />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-emerald-500', keywords: ['seo', 'slug', 'url'] },
-
-    // OFİS & VERİ (31-45)
+    // OFİS & VERİ
     { id: 'kdv', title: 'KDV Hesaplama', description: 'Vergi dahil/hariç hesaplama.', icon: <Calculator />, category: ToolCategory.OFFICE, path: '/kdv-hesaplama', color: 'text-blue-600', keywords: ['kdv', 'vergi', 'finans'] },
     { id: 'percent', title: 'Yüzde Hesaplama', description: 'Hızlı yüzde bulma.', icon: <Percent />, category: ToolCategory.OFFICE, path: '/yuzde-hesaplama', color: 'text-orange-500', keywords: ['yüzde', 'matematik', 'hesap'] },
     { id: 'csv-xml', title: 'CSV to XML', description: 'CSV verilerini XML yapın.', icon: <FileUp />, category: ToolCategory.OFFICE, path: '/csv-xml', color: 'text-emerald-600', keywords: ['csv', 'xml', 'veri'] },
@@ -70,7 +68,13 @@ const HomePage: React.FC = () => {
     { id: 'age', title: 'Yaş Hesaplama', description: 'Doğum gününe göre yaş.', icon: <Activity />, category: ToolCategory.OFFICE, path: '/yas-hesaplama', color: 'text-teal-600', keywords: ['yaş', 'tarih', 'zaman'] },
     { id: 'ratio', title: 'Oran Orantı', description: 'Matematiksel çözümler.', icon: <Divide />, category: ToolCategory.OFFICE, path: '/ratio-calc', color: 'text-indigo-500', keywords: ['oran', 'matematik', 'üçlü'] },
 
-    // YAZILIMCI ARAÇLARI (46-65)
+    // METİN ARAÇLARI
+    { id: 'text-tools', title: 'Harf Dönüştürücü', description: 'Büyük/küçük harf işlemleri.', icon: <Type />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-blue-600', keywords: ['metin', 'harf', 'ters'] },
+    { id: 'word-counter', title: 'Kelime Sayacı', description: 'Metin analizi ve istatistik.', icon: <Hash />, category: ToolCategory.TEXT, path: '/word-counter', color: 'text-indigo-500', keywords: ['kelime', 'sayacı', 'karakter'] },
+    { id: 'lorem', title: 'Lorem Ipsum', description: 'Taslak metin oluşturucu.', icon: <Edit3 />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-slate-400', keywords: ['lorem', 'ipsum', 'taslak'] },
+    { id: 'slug-gen', title: 'URL Slug Gen', description: 'SEO uyumlu URL oluşturun.', icon: <Globe />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-emerald-500', keywords: ['seo', 'slug', 'url'] },
+
+    // YAZILIMCI ARAÇLARI
     { id: 'json-fmt', title: 'JSON Formatter', description: 'JSON verisini güzelleştir.', icon: <Code2 />, category: ToolCategory.DEV, path: '/json-formatter', color: 'text-amber-600', keywords: ['json', 'format', 'code'] },
     { id: 'b64', title: 'Base64 Araçları', description: 'Encode ve Decode işlemleri.', icon: <Binary />, category: ToolCategory.DEV, path: '/base64', color: 'text-slate-800', keywords: ['base64', 'kod', 'encode'] },
     { id: 'url-enc', title: 'URL Encode/Decode', description: 'URL güvenli hale getirin.', icon: <Globe />, category: ToolCategory.DEV, path: '/url-encoder', color: 'text-blue-400', keywords: ['url', 'encode', 'web'] },
@@ -81,7 +85,7 @@ const HomePage: React.FC = () => {
     { id: 'css-min', title: 'CSS Minifier', description: 'CSS dosyalarını optimize et.', icon: <Layers />, category: ToolCategory.DEV, path: '/css-minifier', color: 'text-indigo-400', keywords: ['css', 'minify', 'tasarım'] },
     { id: 'sql-fmt', title: 'SQL Formatter', description: 'SQL sorgularını düzenle.', icon: <Braces />, category: ToolCategory.DEV, path: '/sql-formatter', color: 'text-slate-700', keywords: ['sql', 'format', 'db'] },
 
-    // DÖNÜŞTÜRÜCÜLER (66-80+)
+    // DÖNÜŞTÜRÜCÜLER
     { id: 'u-length', title: 'Uzunluk Çevirici', description: 'Metre, Mil, İnç çevrimi.', icon: <Ruler />, category: ToolCategory.UNIT, path: '/unit-length', color: 'text-slate-600', keywords: ['uzunluk', 'çevirici'] },
     { id: 'u-weight', title: 'Ağırlık Çevirici', description: 'Kg, Lb, Ton çevrimi.', icon: <Scale />, category: ToolCategory.UNIT, path: '/unit-weight', color: 'text-orange-600', keywords: ['ağırlık', 'çevirici'] },
     { id: 'u-temp', title: 'Sıcaklık Çevirici', description: 'C, F, K birimleri.', icon: <Thermometer />, category: ToolCategory.UNIT, path: '/unit-temp', color: 'text-red-500', keywords: ['sıcaklık', 'derece'] },
@@ -130,7 +134,7 @@ const HomePage: React.FC = () => {
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={24} />
           <input 
             type="text"
-            placeholder="Ne yapmak istiyorsunuz? (Örn: CV, KDV, JSON, Mil Çevirici)"
+            placeholder="Ne yapmak istiyorsunuz? (Örn: Gümrük Vergisi, 2026 Maaş Hesaplama, KDV, JSON)"
             className="w-full pl-16 pr-8 py-6 bg-slate-50 border-2 border-slate-100 rounded-[2rem] focus:bg-white focus:border-indigo-600 outline-none transition-all shadow-sm text-lg font-medium"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -153,7 +157,7 @@ const HomePage: React.FC = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mb-24">
           {filteredTools.length > 0 ? (
             filteredTools.map((tool, i) => (
               <React.Fragment key={tool.id}>
@@ -171,6 +175,40 @@ const HomePage: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* SEO Bloğu - Sayfa Altı Semantik İçerik */}
+        <section className="bg-white p-12 md:p-16 rounded-[3rem] border border-slate-200 mb-12 shadow-sm">
+          <div className="max-w-4xl mx-auto text-left">
+            <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-3">
+              <Sparkles size={32} className="text-indigo-600" /> Neden ucretsizaraclar.com.tr?
+            </h2>
+            <div className="prose prose-slate prose-sm max-w-none text-slate-500 space-y-6 leading-relaxed">
+              <p>
+                Dijital dünyada hız ve verimlilik her şeydir. <strong>ucretsizaraclar.com.tr</strong>, günlük iş akışınızı kolaylaştırmak için tasarlanmış 80'den fazla akıllı aracı tek bir çatı altında toplar. Platformumuzda yer alan <strong>2026 maaş hesaplama robotu</strong> ve <strong>güncel gümrük vergisi hesaplayıcı</strong> gibi araçlar, en yeni mevzuat değişikliklerine göre düzenli olarak güncellenir.
+              </p>
+              <div className="grid md:grid-cols-2 gap-8 py-4">
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                  <h3 className="text-slate-900 font-black mb-3 text-base">🤖 Yapay Zeka Desteği</h3>
+                  <p>Yapay zeka (AI) teknolojisini günlük araçlarınıza entegre ettik. AI Metin Özetleme, Akıllı Görsel Oluşturma ve Profesyonel CV Hazırlama araçlarımızla saniyeler içinde kaliteli sonuçlar alabilirsiniz.</p>
+                </div>
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                  <h3 className="text-slate-900 font-black mb-3 text-base">🔒 Güvenli ve Gizlilik Odaklı</h3>
+                  <p>Hesaplamalarınızın ve verilerinizin gizliliği bizim için önceliklidir. Yazılımcı araçlarımızda (Base64, JSON, Hash vb.) verileriniz tarayıcınızda işlenir ve sunucularımıza asla gönderilmez.</p>
+                </div>
+              </div>
+              <p>
+                Birim dönüştürücülerden tasarım araçlarına, yazılım geliştirme yardımcılarından ofis finans araçlarına kadar ihtiyacınız olan her şeye hiçbir ücret ödemeden ve kayıt olmadan ulaşabilirsiniz. Amacımız, dijital profesyoneller, öğrenciler ve işletmeler için en güvenilir <strong>ücretsiz online araçlar</strong> kütüphanesini sunmaktır.
+              </p>
+            </div>
+            <div className="mt-12 flex flex-wrap gap-2">
+              {['Maaş Hesaplama 2026', 'Gümrük Vergisi Hesapla', 'KDV Hesaplama', 'AI Özetleyici', 'Birim Çevirici', 'SEO URL Oluşturucu', 'Şifre Üretici'].map(tag => (
+                <span key={tag} className="px-4 py-2 bg-indigo-50 text-indigo-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-indigo-100">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );

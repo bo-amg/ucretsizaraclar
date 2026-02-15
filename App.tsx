@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import { Home, Menu, X, Cpu, Code, Table, Twitter } from 'lucide-react';
+import { Home, Menu, X, Cpu, Code, Table, Twitter, Github, Linkedin, Mail, ExternalLink } from 'lucide-react';
 import HomePage from './pages/HomePage';
 import AISummarizer from './tools/AISummarizer';
 import AIImageGenerator from './tools/AIImageGenerator';
@@ -22,6 +22,8 @@ import DesignToolSuite from './tools/DesignToolSuite';
 import AICVGenerator from './tools/AICVGenerator';
 import ImageResizer from './tools/ImageResizer';
 import DataToolSuite from './tools/DataToolSuite';
+import PayrollCalculator from './tools/PayrollCalculator';
+import CustomsDutyCalculator from './tools/CustomsDutyCalculator';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,6 +74,8 @@ const App: React.FC = () => {
           <Route path="/recipe-gen" element={<RecipeGenerator />} />
           <Route path="/ratio-calc" element={<RatioCalculator />} />
           <Route path="/image-resizer" element={<ImageResizer />} />
+          <Route path="/bordro-hesaplama" element={<PayrollCalculator />} />
+          <Route path="/gumruk-vergisi" element={<CustomsDutyCalculator />} />
           
           <Route path="/kdv-hesaplama" element={<GenericCalculator type="kdv" />} />
           <Route path="/yuzde-hesaplama" element={<GenericCalculator type="percent" />} />
@@ -117,15 +121,74 @@ const App: React.FC = () => {
         </Routes>
       </main>
 
-      <footer className="bg-slate-900 text-white py-12 px-4 text-center">
+      <footer className="bg-slate-950 text-white pt-20 pb-10 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-center gap-6 mb-8 opacity-60">
-             <Link to="/" className="hover:text-white transition-colors">Ana Sayfa</Link>
-             <Link to="/" className="hover:text-white transition-colors">Hakkımızda</Link>
-             <Link to="/" className="hover:text-white transition-colors">Gizlilik Politikası</Link>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-16">
+            <div className="col-span-1 md:col-span-1">
+              <Link to="/" className="flex items-center gap-2 mb-6">
+                <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-black text-lg">U</span>
+                </div>
+                <span className="text-lg font-black tracking-tighter">ucretsizaraclar<span className="text-indigo-600">.com.tr</span></span>
+              </Link>
+              <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                Türkiye'nin en kapsamlı ücretsiz dijital araçlar portalı. Yapay zekadan ofis araçlarına kadar her şey tek bir platformda.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="p-2 bg-white/5 rounded-lg hover:bg-indigo-600 transition-colors"><Twitter size={18}/></a>
+                <a href="#" className="p-2 bg-white/5 rounded-lg hover:bg-indigo-600 transition-colors"><Github size={18}/></a>
+                <a href="#" className="p-2 bg-white/5 rounded-lg hover:bg-indigo-600 transition-colors"><Mail size={18}/></a>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Popüler Araçlar</h3>
+              <ul className="space-y-3 text-slate-400 text-sm">
+                <li><Link to="/bordro-hesaplama" className="hover:text-white transition-colors">Maaş Hesaplama 2026</Link></li>
+                <li><Link to="/gumruk-vergisi" className="hover:text-white transition-colors">Gümrük Vergisi Hesaplama</Link></li>
+                <li><Link to="/summarizer" className="hover:text-white transition-colors">AI Metin Özetleme</Link></li>
+                <li><Link to="/image-gen" className="hover:text-white transition-colors">AI Görsel Oluşturma</Link></li>
+                <li><Link to="/kdv-hesaplama" className="hover:text-white transition-colors">KDV Hesaplama</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Hızlı Linkler</h3>
+              <ul className="space-y-3 text-slate-400 text-sm">
+                <li><Link to="/" className="hover:text-white transition-colors">Tüm Araçlar</Link></li>
+                <li><Link to="/cv-gen" className="hover:text-white transition-colors">AI CV Oluşturucu</Link></li>
+                <li><Link to="/json-formatter" className="hover:text-white transition-colors">JSON Formatlayıcı</Link></li>
+                <li><Link to="/unit-length" className="hover:text-white transition-colors">Birim Dönüştürücü</Link></li>
+                <li><Link to="/image-resizer" className="hover:text-white transition-colors">Resim Boyutlandırma</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Kurumsal</h3>
+              <ul className="space-y-3 text-slate-400 text-sm">
+                <li><Link to="/" className="hover:text-white transition-colors">Hakkımızda</Link></li>
+                <li><Link to="/" className="hover:text-white transition-colors">Gizlilik Politikası</Link></li>
+                <li><Link to="/" className="hover:text-white transition-colors">Kullanım Şartları</Link></li>
+                <li><Link to="/" className="hover:text-white transition-colors">İletişim</Link></li>
+                <li className="pt-2">
+                  <a href="mailto:info@ucretsizaraclar.com.tr" className="inline-flex items-center gap-2 text-indigo-400 font-bold hover:text-indigo-300">
+                    Bize Yazın <ExternalLink size={14}/>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <p className="text-slate-400 text-sm mb-4">© {new Date().getFullYear()} ucretsizaraclar.com.tr - Ücretsiz Dijital Araçlar Portalı</p>
-          <div className="flex justify-center gap-4"><Twitter size={20}/></div>
+
+          <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-slate-500 text-xs font-medium">
+              © {new Date().getFullYear()} ucretsizaraclar.com.tr. Tüm hakları saklıdır.
+            </p>
+            <div className="flex items-center gap-6">
+              <span className="flex items-center gap-2 text-[10px] text-slate-600 font-bold uppercase tracking-widest">
+                <Cpu size={12}/> AI Powered Platform
+              </span>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

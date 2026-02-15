@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Type as TypeIcon, Copy, Trash2, Hash, FileText, Check, Repeat, Eraser, AlignLeft } from 'lucide-react';
+import { Type as TypeIcon, Copy, Trash2, Hash, FileText, Check, Repeat, Eraser, AlignLeft, Link as LinkIcon, FileJson } from 'lucide-react';
 
 const TextConverter: React.FC = () => {
   const [text, setText] = useState('');
@@ -16,10 +15,29 @@ const TextConverter: React.FC = () => {
     lines: text.trim() === '' ? 0 : text.split('\n').length
   };
 
+  const createSlug = (str: string) => {
+    let slug = str.toLowerCase().trim();
+    const mapping: { [key: string]: string } = {
+      'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u',
+      'Ç': 'c', 'Ğ': 'g', 'İ': 'i', 'Ö': 'o', 'Ş': 's', 'Ü': 'u'
+    };
+    Object.keys(mapping).forEach(key => {
+      slug = slug.replace(new RegExp(key, 'g'), mapping[key]);
+    });
+    return slug
+      .replace(/[^a-z0-9 -]/g, '') // Harf, rakam, boşluk ve tire dışındakileri sil
+      .replace(/\s+/g, '-')        // Boşlukları tire yap
+      .replace(/-+/g, '-')         // Çoklu tireleri tekle
+      .replace(/^-+/, '')          // Baştaki tireyi sil
+      .replace(/-+$/, '');         // Sondaki tireyi sil
+  };
+
   const actions = [
     { name: 'BÜYÜK HARF', fn: () => setText(text.toUpperCase()) },
     { name: 'küçük harf', fn: () => setText(text.toLowerCase()) },
     { name: 'Yazım Düzeni', fn: () => setText(text.toLowerCase().replace(/(^\w|\s\w)/g, m => m.toUpperCase())) },
+    { name: 'URL SLUG YAP', fn: () => setText(createSlug(text)) },
+    { name: 'LOREM IPSUM EKLE', fn: () => setText(prev => prev + (prev ? '\n\n' : '') + "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.") },
     { name: 'Ters Çevir', fn: () => setText(text.split('').reverse().join('')) },
     { name: 'Boşlukları Temizle', fn: () => setText(text.replace(/\s+/g, ' ').trim()) },
     { name: 'Satırları Birleştir', fn: () => setText(text.replace(/\n/g, ' ')) },
@@ -44,7 +62,7 @@ const TextConverter: React.FC = () => {
           <TypeIcon size={40} />
         </div>
         <h1 className="text-4xl font-black text-slate-900 mb-2">Metin Dönüştürücü</h1>
-        <p className="text-slate-500">Metinlerinizi düzenleyin, temizleyin ve profesyonel hale getirin.</p>
+        <p className="text-slate-500">Metinlerinizi düzenleyin, temizleyin ve SEO uyumlu URL'ler oluşturun.</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -65,7 +83,7 @@ const TextConverter: React.FC = () => {
       <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden p-6 md:p-8">
         <textarea
           className="w-full h-80 p-6 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none font-mono text-sm mb-6"
-          placeholder="Metninizi buraya yazın..."
+          placeholder="Metninizi buraya yazın veya URL slug yapmak istediğiniz başlığı yapıştırın..."
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
@@ -75,7 +93,11 @@ const TextConverter: React.FC = () => {
             <button
               key={action.name}
               onClick={action.fn}
-              className="px-3 py-3 bg-slate-100 text-slate-700 font-bold text-[11px] uppercase rounded-xl hover:bg-blue-600 hover:text-white transition-all border border-slate-200"
+              className={`px-3 py-3 font-bold text-[11px] uppercase rounded-xl transition-all border ${
+                action.name.includes('URL') || action.name.includes('LOREM') 
+                ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-600 hover:text-white' 
+                : 'bg-slate-100 text-slate-700 hover:bg-blue-600 hover:text-white border-slate-200'
+              }`}
             >
               {action.name}
             </button>

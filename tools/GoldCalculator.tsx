@@ -1,97 +1,65 @@
 
 import React, { useState, useEffect } from 'react';
-import { Coins, TrendingUp, TrendingDown, RefreshCw, Calculator, DollarSign, Wallet, ArrowRight, LineChart, Info, ShieldCheck, AlertCircle, Calendar as CalendarIcon, History, ArrowRightLeft, AlertTriangle } from 'lucide-react';
+import { Coins, TrendingUp, TrendingDown, RefreshCw, Calculator, DollarSign, Wallet, ArrowRight, LineChart, Info, ShieldCheck, AlertCircle, Calendar as CalendarIcon, History, ArrowRightLeft, AlertTriangle, Loader2 } from 'lucide-react';
 import AdUnit from '../components/AdUnit';
 
 const GoldCalculator: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [historyLoading, setHistoryLoading] = useState(false);
   const [liveData, setLiveData] = useState<any>(null);
-  const [historicalData, setHistoricalData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   
   const [amount, setAmount] = useState<string>('10');
   const [purchasePrice, setPurchasePrice] = useState<string>('');
   const [purchaseDate, setPurchaseDate] = useState<string>('');
-  const [goldType, setGoldType] = useState<'gram' | 'ounce' | 'quarter'>('gram');
   const [currency, setCurrency] = useState<'TRY' | 'USD'>('TRY');
 
-  const API_KEY = 'goldapi-wy0xcsmlo56an4-io';
+  // Sağladığınız API Key: 0c010fa4fca4920270bc4ee3
+  // CollectAPI için auth formatı
+  const API_KEY = 'apikey 0c010fa4fca4920270bc4ee3';
 
   const fetchGoldPrice = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://www.goldapi.io/api/XAU/${currency}`, {
+      // CollectAPI Altın Verileri
+      const response = await fetch(`https://api.collectapi.com/economy/goldPrice`, {
         headers: {
-          'x-access-token': API_KEY,
-          'Content-Type': 'application/json'
+          'content-type': 'application/json',
+          'authorization': API_KEY
         }
       });
       
       if (!response.ok) throw new Error('Güncel fiyat verisi alınamadı.');
       const data = await response.json();
-      setLiveData(data);
+      
+      if (data.success) {
+        const gramGold = data.result.find((r: any) => r.name === "Gram Altın");
+        setLiveData({
+          price: parseFloat(gramGold.buying.replace(',', '.')),
+          sellPrice: parseFloat(gramGold.selling.replace(',', '.')),
+          timestamp: new Date().getTime() / 1000
+        });
+      } else {
+        throw new Error('API Hatası');
+      }
     } catch (err) {
-      setError('Canlı altın fiyatları şu an yüklenemiyor.');
+      setError('Anlık altın fiyatları şu an yüklenemiyor. Lütfen daha sonra tekrar deneyin.');
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchHistoricalPrice = async (date: string) => {
-    if (!date) return;
-    setHistoryLoading(true);
-    const formattedDate = date.replace(/-/g, '');
-    try {
-      const response = await fetch(`https://www.goldapi.io/api/XAU/${currency}/${formattedDate}`, {
-        headers: {
-          'x-access-token': API_KEY,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (!response.ok) throw new Error('Geçmiş tarihli veri bulunamadı.');
-      const data = await response.json();
-      setHistoricalData(data);
-      
-      if (data && (data.price_gram_24k || data.price)) {
-        let price = data.price_gram_24k || 0;
-        if (goldType === 'ounce') price = data.price || 0;
-        if (goldType === 'quarter') price = (data.price_gram_24k || 0) * 1.75;
-        setPurchasePrice(price.toFixed(2));
-      }
-    } catch (err) {
-      console.error('History fetch error:', err);
-    } finally {
-      setHistoryLoading(false);
-    }
-  };
-
   useEffect(() => {
-    document.title = "Altın Getirisi Hesaplama (Canlı) | ucretsizaraclar.com.tr";
+    document.title = "Canlı Altın Getirisi Hesaplama | ucretsizaraclar.com.tr";
     fetchGoldPrice();
   }, [currency]);
-
-  useEffect(() => {
-    if (purchaseDate) {
-        fetchHistoricalPrice(purchaseDate);
-    }
-  }, [purchaseDate, goldType]);
 
   const calculateResults = () => {
     if (!liveData) return null;
 
-    const currentPricePerGram = liveData.price_gram_24k || 0;
-    const currentPricePerOunce = liveData.price || 0;
-    const currentPricePerQuarter = currentPricePerGram * 1.75;
-
-    let currentUnitPrice = currentPricePerGram;
-    if (goldType === 'ounce') currentUnitPrice = currentPricePerOunce;
-    else if (goldType === 'quarter') currentUnitPrice = currentPricePerQuarter;
-
-    const totalCurrentValue = (parseFloat(amount) || 0) * currentUnitPrice;
+    const currentPricePerGram = liveData.price || 0;
+    const totalCurrentValue = (parseFloat(amount) || 0) * currentPricePerGram;
     
     let profitLoss = 0;
     let profitPercentage = 0;
@@ -102,11 +70,11 @@ const GoldCalculator: React.FC = () => {
     }
 
     return {
-      currentUnitPrice,
+      currentUnitPrice: currentPricePerGram,
       totalCurrentValue,
       profitLoss,
       profitPercentage,
-      lastUpdate: liveData.timestamp ? new Date(liveData.timestamp * 1000).toLocaleTimeString('tr-TR') : '--:--'
+      lastUpdate: new Date(liveData.timestamp * 1000).toLocaleTimeString('tr-TR')
     };
   };
 
@@ -115,14 +83,14 @@ const GoldCalculator: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <header className="text-center mb-12">
-        <div className="inline-flex p-4 bg-amber-50 text-amber-600 rounded-3xl mb-4 border border-amber-100 shadow-sm animate-pulse">
+        <div className="inline-flex p-4 bg-amber-50 text-amber-600 rounded-3xl mb-4 border border-amber-100 shadow-sm">
           <Coins size={40} />
         </div>
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
-          Altın Yatırım <span className="text-amber-600">Robotu</span>
+          Anlık Altın <span className="text-amber-600">Yatırım Takibi</span>
         </h1>
         <p className="text-slate-500 max-w-3xl mx-auto text-lg leading-relaxed">
-          Aldığınız tarihten bugüne altın kazancınızı <strong>Canlı GoldAPI</strong> verileriyle analiz edin.
+          CollectAPI altyapısı ile <strong>canlı altın fiyatlarını</strong> takip edin ve kâr/zarar analizinizi saniyeler içinde yapın.
         </p>
       </header>
 
@@ -131,13 +99,24 @@ const GoldCalculator: React.FC = () => {
           <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl space-y-6 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-amber-500"></div>
             
-            <div className="space-y-3">
-              <label className="text-sm font-bold text-slate-700">Miktar</label>
+            <div className="space-y-4">
+              <label className="text-sm font-bold text-slate-700">Toplam Gram Miktarı</label>
               <input 
                 type="number"
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-100 outline-none transition-all text-xl font-black"
+                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-100 outline-none transition-all text-2xl font-black"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-sm font-bold text-slate-700">Alış Fiyatınız (1 Gram İçin)</label>
+              <input 
+                type="number"
+                placeholder="Örn: 2450.50"
+                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-100 outline-none transition-all font-bold"
+                value={purchasePrice}
+                onChange={(e) => setPurchasePrice(e.target.value)}
               />
             </div>
 
@@ -145,27 +124,60 @@ const GoldCalculator: React.FC = () => {
               onClick={fetchGoldPrice}
               className="w-full py-5 bg-amber-600 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-amber-700 transition-all shadow-xl shadow-amber-100"
             >
-              <RefreshCw size={20} /> Piyasa Güncelle
+              {loading ? <Loader2 className="animate-spin" /> : <RefreshCw size={20} />}
+              Canlı Fiyatları Güncelle
             </button>
           </section>
+
+          {error && (
+            <div className="p-4 bg-red-50 text-red-600 rounded-2xl flex items-center gap-2 text-sm font-bold animate-in fade-in zoom-in">
+              <AlertCircle size={18} /> {error}
+            </div>
+          )}
 
           <div className="p-8 bg-slate-100 rounded-3xl border border-slate-200 flex items-start gap-4">
             <AlertTriangle className="text-slate-400 shrink-0" size={24} />
             <p className="text-[11px] text-slate-500 leading-relaxed italic">
-              <strong>Yasal Uyarı:</strong> Bu araç tarafından sunulan hesaplamalar tahminidir ve sadece bilgi verme amaçlıdır. API veri gecikmeleri, banka makas farkları veya piyasa oynaklığı nedeniyle sapmalar ve yanlışlıklar olabilir. ucretsizaraclar.com.tr bu hesaplamalardan doğabilecek hiçbir yasal sorumluluğu kabul etmez.
+              Hesaplamalar piyasa alış-satış farklarını içermez. ucretsizaraclar.com.tr finansal tavsiye vermez. Veriler güvenilir kaynaklardan alınsa da yatırım kararlarınızı doğrulamalısınız.
             </p>
           </div>
         </div>
 
-        <div className="lg:col-span-7">
-          {results && (
-            <div className="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-                <div className="text-center mb-10">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">GÜNCEL TOPLAM DEĞER</span>
-                    <div className="text-6xl font-black tabular-nums tracking-tighter">
-                      {(results.totalCurrentValue || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} {currency}
-                    </div>
+        <div className="lg:col-span-7 space-y-6">
+          {results ? (
+            <div className="animate-in fade-in slide-in-from-right-4 duration-500 space-y-6">
+              <div className="bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-10 opacity-5 rotate-12"><Coins size={240} /></div>
+                <div className="relative z-10 text-center">
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-2">PORTFÖYÜNÜZÜN GÜNCEL DEĞERİ</span>
+                  <div className="text-7xl font-black tabular-nums tracking-tighter mb-4">
+                    {(results.totalCurrentValue || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                  </div>
+                  <div className={`inline-flex items-center gap-2 px-6 py-2 rounded-full font-black text-sm ${results.profitLoss >= 0 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}`}>
+                    {results.profitLoss >= 0 ? <TrendingUp size={16}/> : <TrendingDown size={16}/>}
+                    {results.profitLoss >= 0 ? '+' : ''}{results.profitLoss.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺ (%{results.profitPercentage.toFixed(2)})
+                  </div>
                 </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 text-center">
+                  <span className="text-[10px] font-black text-slate-400 uppercase block mb-1">Anlık Gram Fiyatı</span>
+                  <div className="text-2xl font-black text-slate-900">{results.currentUnitPrice.toLocaleString('tr-TR')} ₺</div>
+                </div>
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 text-center">
+                  <span className="text-[10px] font-black text-slate-400 uppercase block mb-1">Son Güncelleme</span>
+                  <div className="text-2xl font-black text-indigo-600">{results.lastUpdate}</div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="h-full min-h-[400px] bg-white rounded-[3rem] border-4 border-dashed border-slate-100 flex flex-col items-center justify-center text-center p-12">
+               <Calculator size={64} className="text-slate-100 mb-6" />
+               <h3 className="text-2xl font-black text-slate-900 mb-2">Altın Portföyünüzü İzleyin</h3>
+               <p className="text-slate-400 text-sm max-w-sm">
+                 Elinizdeki gram altın miktarını ve alış fiyatınızı girerek bugünkü kârınızı saniyeler içinde hesaplayın.
+               </p>
             </div>
           )}
         </div>

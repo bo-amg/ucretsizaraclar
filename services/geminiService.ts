@@ -20,6 +20,23 @@ export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash
   }
 };
 
+export const analyzeSpread = async (asset: string, marketPrice: number, banks: any[]) => {
+  const bankData = banks.map(b => `${b.name}: Alış ${b.buy}, Satış ${b.sell}, Makas %${b.spreadPercent}`).join('\n');
+  const prompt = `
+    Sen bir finans analistisin. Kullanıcı şu anki ${asset} piyasasını takip ediyor.
+    Piyasa (Ons/Spot) Fiyatı: ${marketPrice}
+    Kullanıcının girdiği banka verileri:
+    ${bankData}
+
+    GÖREVİN:
+    1. Hangi bankanın makas aralığı (spread) yatırımcı için en avantajlı?
+    2. Mevcut makas oranları (Türkiye piyasası standartlarına göre %0.5 - %2 arası normal kabul edilir) makul mü yoksa çok mu yüksek?
+    3. Kullanıcıya bu bankalardan işlem yaparken neye dikkat etmesi gerektiğini (mesai saatleri, makasın açılması vb.) 3 kısa madde ile açıkla.
+    4. Dil: Türkçe. Yanıt profesyonel, kısa ve öz olsun. Markdown kullan.
+  `;
+  return callAI(prompt);
+};
+
 export interface SummarizeConfig {
   sentences: number;
   style: 'paragraph' | 'bullets';

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -8,7 +9,7 @@ import {
   Mail, MessageSquare, PenTool, Braces, Layers, Maximize, MousePointer2, Info,
   Sun, Wind, HardDrive, Square, Box, UserCircle, Layout, FileUp, FileDown, 
   Settings, Terminal, Fingerprint, Eye, EyeOff, Scissors, Edit3, HeartPulse,
-  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck, Coins, Gavel, Key, History, GraduationCap, Award, Target, Bitcoin
+  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck, Coins, Gavel, Key, History, GraduationCap, Award, Target, Bitcoin, ArrowRightLeft
 } from 'lucide-react';
 import { ToolCategory, ToolItem } from '../types';
 import AdUnit from '../components/AdUnit';
@@ -42,6 +43,7 @@ const HomePage: React.FC = () => {
 
   const allTools: ToolItem[] = useMemo(() => [
     // EN ÇOK KULLANILANLAR
+    { id: 'arbitrage', title: 'Banka Makas Hesaplama', description: 'Altın ve Döviz için bankalar arası alım-satım farkı ve en kârlı banka analizi.', icon: <ArrowRightLeft />, category: ToolCategory.OFFICE, path: '/makas-hesaplama', color: 'text-amber-600', keywords: ['makas aralığı', 'banka altın', 'dolar makas', 'arbitraj', 'altın fiyatı'] },
     { id: 'payroll', title: 'Maaş Hesaplama 2026', description: '2026 brütten nete maaş dökümü ve bordro simülatörü.', icon: <Receipt />, category: ToolCategory.OFFICE, path: '/bordro-hesaplama', color: 'text-indigo-600', keywords: ['2026 maaş hesaplama', 'bordro 2026', 'brüt net 2026', 'maaş robotu', 'vergi dilimi 2026'] },
     { id: 'gumruk', title: 'Gümrük Vergisi 2026', description: 'Şubat 2026 yeni gümrük yasasına uygun vergi hesaplayıcı.', icon: <Truck />, category: ToolCategory.OFFICE, path: '/gumruk-vergisi', color: 'text-indigo-600', keywords: ['gümrük vergisi', 'temu vergi', 'amazon gümrük', 'yurt dışı alışveriş', '2026 gümrük'] },
     { id: 'loan', title: 'Kredi Hesaplama 2026', description: 'Banka kredi taksidi, toplam faiz ve ödeme planı.', icon: <Landmark />, category: ToolCategory.OFFICE, path: '/kredi-hesaplama', color: 'text-indigo-600', keywords: ['kredi hesaplama', 'banka faiz', 'taksit hesapla', 'ihtiyaç kredisi', 'konut kredisi'] },
@@ -54,6 +56,7 @@ const HomePage: React.FC = () => {
     { id: 'appreciation', title: 'Takdir Teşekkür', description: 'Dönem sonlarında ortaokul ve lise not ortalaması sorguları.', icon: <Award />, category: ToolCategory.OFFICE, path: '/takdir-tesekkur', color: 'text-amber-600', keywords: ['takdir hesaplama', 'teşekkür hesaplama', 'not ortalaması', 'eokul hesapla'] },
     { id: 'obp', title: 'OBP Hesaplama', description: 'YKS üniversite sınavına eklenecek okul puanı hesaplama.', icon: <Target />, category: ToolCategory.OFFICE, path: '/obp-hesaplama', color: 'text-indigo-500', keywords: ['obp hesaplama', 'okul puanı', 'yks obp', 'diploma notu'] },
     { id: 'legal', title: 'Dava Harcı ve Masrafı', description: 'Dava açma maliyetlerini yasal tarifelere göre hesaplayın.', icon: <Scale />, category: ToolCategory.OFFICE, path: '/dava-harci', color: 'text-slate-600', keywords: ['dava harcı', 'mahkeme masrafı', 'harç hesaplama', 'bilirkişi ücreti', 'gider avansi'] },
+    { id: 'vat-withholding', title: 'KDV Tevkifat Hesapla', description: 'Reklam ve inşaat sektörüne özel tevkifatlı fatura hesaplama robotu.', icon: <Receipt />, category: ToolCategory.OFFICE, path: '/kdv-tevkifat', color: 'text-emerald-700', keywords: ['tevkifat', 'kdv tevkifat', '9/10 tevkifat', 'fatura hesaplama', 'reklam kdv'] },
 
     // YAPAY ZEKA
     { id: 'cv-gen', title: 'AI CV Oluşturucu', description: 'Profesyonel özgeçmiş hazırlayın.', icon: <UserCircle />, category: ToolCategory.AI, path: '/cv-gen', color: 'text-indigo-600', keywords: ['cv', 'iş', 'ai', 'kariyer', 'özgeçmiş'] },

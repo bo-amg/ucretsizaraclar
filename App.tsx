@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import { Home, Menu, X, Cpu, Code, Table, Twitter, Github, Linkedin, Mail, ExternalLink } from 'lucide-react';
+import { Home, Menu, X, Cpu, Code, Table, Twitter, Github, Linkedin, Mail, ExternalLink, Sparkles, Search } from 'lucide-react';
 import HomePage from './pages/HomePage';
 import AISummarizer from './tools/AISummarizer';
 import AIImageGenerator from './tools/AIImageGenerator';
@@ -34,9 +34,21 @@ import DelayInterestCalculator from './tools/DelayInterestCalculator';
 import ExamScoreCalculator from './tools/ExamScoreCalculator';
 import AppreciationCalculator from './tools/AppreciationCalculator';
 import ObpCalculator from './tools/ObpCalculator';
+import ArbitrageCalculator from './tools/ArbitrageCalculator';
+import VatWithholdingCalculator from './tools/VatWithholdingCalculator';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const seoKeywords = [
+    "2026 maaş hesaplama", "brütten nete maaş", "netten brüte maaş", "gümrük vergisi hesaplama 2026", "temu vergi hesapla", 
+    "yapay zeka cv oluşturma", "ücretsiz ai cv", "pdf özetleme ai", "metin özetleyici yapay zeka", "excel formül yardımı", 
+    "banka makas aralığı hesapla", "altın makas hesaplama", "dolar arbitraj takibi", "kredi taksit hesaplama 2026", 
+    "mevduat faiz getirisi", "kıdem tazminatı hesapla", "ihbar tazminatı robotu", "tapu harcı hesaplama", "emeklilik yaşı bulma",
+    "dava harcı hesapla", "gecikme zammı 6183", "lgs puan hesaplama 2026", "yks tyt ayt puan robotu", "obp hesaplama", 
+    "takdir teşekkür hesapla", "ortaokul ortalama bul", "lise karne notu", "json formatlayıcı", "base64 encode decode",
+    "url encoder online", "css gradient oluşturucu", "resim boyut küçültme", "birim dönüştürücü", "uzunluk çevirici", "kdv tevkifat hesaplama"
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -96,6 +108,8 @@ const App: React.FC = () => {
           <Route path="/sinav-puan-hesaplama" element={<ExamScoreCalculator />} />
           <Route path="/takdir-tesekkur" element={<AppreciationCalculator />} />
           <Route path="/obp-hesaplama" element={<ObpCalculator />} />
+          <Route path="/makas-hesaplama" element={<ArbitrageCalculator />} />
+          <Route path="/kdv-tevkifat" element={<VatWithholdingCalculator />} />
           
           <Route path="/kdv-hesaplama" element={<GenericCalculator type="kdv" />} />
           <Route path="/yuzde-hesaplama" element={<GenericCalculator type="percent" />} />
@@ -141,9 +155,9 @@ const App: React.FC = () => {
         </Routes>
       </main>
 
-      <footer className="bg-slate-950 text-white pt-20 pb-10 px-4">
+      <footer className="bg-slate-950 text-white pt-20 pb-10 px-4 overflow-hidden relative">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-16 relative z-10">
             <div className="col-span-1 md:col-span-1">
               <Link to="/" className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
@@ -164,11 +178,11 @@ const App: React.FC = () => {
             <div>
               <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Popüler Araçlar</h3>
               <ul className="space-y-3 text-slate-400 text-sm">
+                <li><Link to="/makas-hesaplama" className="hover:text-white transition-colors">Banka Makas Hesapla</Link></li>
                 <li><Link to="/bordro-hesaplama" className="hover:text-white transition-colors">Maaş Hesaplama 2026</Link></li>
                 <li><Link to="/takdir-tesekkur" className="hover:text-white transition-colors">Takdir Teşekkür Hesapla</Link></li>
                 <li><Link to="/sinav-puan-hesaplama" className="hover:text-white transition-colors">YKS Puan Hesaplama</Link></li>
                 <li><Link to="/kredi-hesaplama" className="hover:text-white transition-colors">Kredi Hesaplama</Link></li>
-                <li><Link to="/gumruk-vergisi" className="hover:text-white transition-colors">Gümrük Vergisi Hesaplama</Link></li>
               </ul>
             </div>
 
@@ -199,7 +213,34 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* SEO / Keyword Cloud Section */}
+          <div className="pt-16 mt-16 border-t border-white/5 relative z-10">
+            <div className="flex flex-col gap-8">
+              <div className="prose prose-invert prose-sm max-w-none opacity-50">
+                <h4 className="text-xs font-black uppercase tracking-[0.3em] text-indigo-400 mb-4">Dijital Araçlar ve Hesaplama Rehberi</h4>
+                <p className="text-[10px] leading-relaxed italic">
+                  ucretsizaraclar.com.tr olarak Türkiye'nin en kapsamlı <strong>ücretsiz dijital araçlar</strong> platformunu sunuyoruz. 
+                  Sitemiz üzerinden <strong>2026 maaş hesaplama</strong> robotunu kullanarak brütten nete bordro analizi yapabilir, 
+                  <strong>gümrük vergisi hesaplama 2026</strong> aracı ile yurt dışı alışveriş maliyetlerinizi saniyeler içinde görebilirsiniz. 
+                  Yapay zeka teknolojisini kullanarak <strong>AI CV oluşturma</strong>, <strong>metin özetleme</strong> ve <strong>Excel formül yardımı</strong> 
+                  gibi modern çözümler üretiyoruz. Finansal kararlarınızda <strong>banka makas aralığı hesaplama</strong> ve <strong>arbitraj takibi</strong> 
+                  araçlarımızla yanınızdayız. Eğitim hayatında ise <strong>LGS puan hesaplama</strong>, <strong>YKS tyt ayt puan robotu</strong> ve 
+                  <strong>obp hesaplama</strong> araçlarıyla öğrencilerimize güncel veriler sağlıyoruz. Tüm araçlarımız 2024, 2025 ve 2026 mevzuat değişikliklerine 
+                  tam uyumlu şekilde güncellenmektedir.
+                </p>
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {seoKeywords.map((keyword, i) => (
+                  <span key={i} className="text-[9px] font-bold text-slate-600 uppercase hover:text-indigo-400 transition-colors cursor-default">
+                    {keyword} {i !== seoKeywords.length - 1 && "•"}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
             <p className="text-slate-500 text-xs font-medium">
               © {new Date().getFullYear()} ucretsizaraclar.com.tr. Tüm hakları saklıdır.
             </p>
@@ -210,6 +251,10 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
+        
+        {/* Background SEO Decoration */}
+        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-indigo-600/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-violet-600/5 rounded-full blur-[100px] pointer-events-none"></div>
       </footer>
     </div>
   );

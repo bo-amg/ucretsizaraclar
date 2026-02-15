@@ -2,9 +2,15 @@
 import { GoogleGenAI } from "@google/genai";
 
 export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash-preview'): Promise<string> => {
+  const apiKey = process.env.API_KEY;
+
+  if (!apiKey || apiKey.length < 10) {
+    console.error("HATA: API Anahtarı eksik veya çok kısa. build sırasında enjekte edilememiş olabilir.");
+    return "Hata: API Anahtarı sunucu tarafından tanınmadı. Lütfen yönetici ile iletişime geçin.";
+  }
+
   try {
-    // Talimatlara göre doğrudan kullanım
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey });
     
     const response = await ai.models.generateContent({
       model: modelName,
@@ -17,13 +23,17 @@ export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash
     });
     
     if (!response.text) {
-      throw new Error("Boş yanıt");
+      throw new Error("Boş yanıt döndü");
     }
     
     return response.text;
-  } catch (error) {
-    console.error("AI Service Error:", error);
-    return "Yapay zeka şu an yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin veya API anahtarının tanımlı olduğundan emin olun.";
+  } catch (error: any) {
+    console.error("AI Service Detail Error:", error);
+    // Spesifik API hatalarını kullanıcıya daha anlamlı gösterelim
+    if (error.message?.includes("API key not valid")) {
+      return "Hata: Geçersiz API anahtarı. Lütfen anahtarı kontrol edin.";
+    }
+    return "Yapay zeka şu an yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.";
   }
 };
 
@@ -95,8 +105,11 @@ export const generateExcelFormula = (desc: string) =>
   callAI(`Aşağıdaki açıklama için uygun Excel veya Google Sheets formülünü sadece formül olarak oluştur: ${desc}`);
 
 export const generateImage = async (prompt: string): Promise<string | null> => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) return null;
+
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: { parts: [{ text: prompt }] }

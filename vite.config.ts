@@ -5,8 +5,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    // build sırasında process.env.API_KEY yoksa 'undefined' stringi yerine boş string basar
-    'process.env.API_KEY': JSON.stringify(process.env.API_KEY || '')
+    // process.env.API_KEY'i derleme aşamasında enjekte eder. 
+    // Vercel/Netlify gibi ortamlarda bu değişkenin BUILD sırasında mevcut olması gerekir.
+    'process.env.API_KEY': JSON.stringify(process.env.API_KEY)
   },
   server: {
     port: 3000

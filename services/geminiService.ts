@@ -1,21 +1,14 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// API anahtarını kontrol eden yardımcı fonksiyon
-const getAIClient = () => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey || apiKey === 'undefined') {
-    throw new Error("API_KEY bulunamadı. Lütfen ortam değişkenlerini kontrol edin.");
-  }
-  return new GoogleGenAI({ apiKey });
-};
-
 export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash-preview'): Promise<string> => {
   try {
-    const ai = getAIClient();
+    // Talimatlara göre doğrudan kullanım
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    
     const response = await ai.models.generateContent({
       model: modelName,
-      contents: prompt, // Basit metinler için en güvenli yapı
+      contents: prompt,
       config: { 
         temperature: 0.7,
         topK: 40,
@@ -24,16 +17,13 @@ export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash
     });
     
     if (!response.text) {
-      throw new Error("Modelden boş yanıt döndü.");
+      throw new Error("Boş yanıt");
     }
     
     return response.text;
-  } catch (error: any) {
-    console.error("AI Error:", error);
-    if (error.message?.includes("API_KEY")) {
-      return "Hata: Sunucu tarafında API Anahtarı yapılandırılmamış.";
-    }
-    return "Yapay zeka şu an yoğun veya yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.";
+  } catch (error) {
+    console.error("AI Service Error:", error);
+    return "Yapay zeka şu an yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin veya API anahtarının tanımlı olduğundan emin olun.";
   }
 };
 
@@ -106,13 +96,12 @@ export const generateExcelFormula = (desc: string) =>
 
 export const generateImage = async (prompt: string): Promise<string | null> => {
   try {
-    const ai = getAIClient();
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: { parts: [{ text: prompt }] }
     });
     
-    // Güvenli parça arama
     const candidate = response.candidates?.[0];
     const parts = candidate?.content?.parts || [];
     

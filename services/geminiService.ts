@@ -1,7 +1,7 @@
+
 import { GoogleGenAI } from "@google/genai";
 
 export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash-preview'): Promise<string> => {
-  // Fix: Initializing GoogleGenAI using process.env.API_KEY directly as per SDK guidelines.
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
     const response = await ai.models.generateContent({
@@ -16,7 +16,7 @@ export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash
     return response.text || "Bir yanıt oluşturulamadı.";
   } catch (error) {
     console.error("AI Error:", error);
-    return "Hizmet şu an kullanılamıyor, lütfen API anahtarınızı Vercel Environment Variables kısmına eklediğinizden emin olun.";
+    return "Hizmet şu an kullanılamıyor, lütfen API anahtarınızı kontrol edin.";
   }
 };
 
@@ -51,8 +51,22 @@ export const summarizeText = (text: string, config: SummarizeConfig) => {
 
 export const generateRecipe = (ingredients?: string) => {
   const prompt = ingredients?.trim() 
-    ? `Elimde şu malzemeler var: ${ingredients}. Bu malzemeleri kullanarak (ve evde bulunabilecek temel malzemeleri ekleyerek) yapılabilecek lezzetli bir yemek tarifi oluştur. Tarif başlık, malzeme listesi ve adım adım yapılış içermeli. Format Markdown olsun.`
-    : "Bana rastgele lezzetli ve popüler bir yemek tarifi ver. Başlık, malzemeler ve yapılış olsun. Format Markdown olsun.";
+    ? `
+      Sen profesyonel bir şefsin. Kullanıcının elinde şu malzemeler var: "${ingredients}". 
+      GÖREVİN:
+      1. Bu malzemeleri merkeze alan, israfı önleyen ve eldeki malzemelerle yapılabilecek en lezzetli "optimizasyonu" sağlayan bir tarif oluştur.
+      2. Mümkünse eldeki tüm malzemeleri kullanmaya çalış ama ana malzemelere sadık kal.
+      3. Tuz, su, yağ gibi her evde bulunabilecek temel malzemeleri kullanabilirsin.
+      4. Tarifin bir "İsmi", "Hazırlanma Süresi", "Malzeme Listesi" ve "Adım Adım Hazırlanışı" olsun.
+      5. Sonuç Markdown formatında olsun ve iştah açıcı bir dille yazılsın.
+      6. Dil: Türkçe.
+    `
+    : `
+      Bana rastgele, popüler ve herkesin evinde yapabileceği lezzetli bir yemek tarifi ver.
+      Tarifin bir "İsmi", "Zorluk Derecesi", "Malzeme Listesi" ve "Hazırlanışı" olsun.
+      Format: Markdown.
+      Dil: Türkçe.
+    `;
   
   return callAI(prompt);
 };
@@ -96,7 +110,6 @@ export const generateExcelFormula = (desc: string) =>
   callAI(`Aşağıdaki açıklama için uygun Excel veya Google Sheets formülünü oluştur: ${desc}`);
 
 export const generateImage = async (prompt: string): Promise<string | null> => {
-  // Fix: Initializing GoogleGenAI using process.env.API_KEY directly as per SDK guidelines.
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
     const response = await ai.models.generateContent({

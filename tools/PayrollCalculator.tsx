@@ -182,19 +182,19 @@ const PayrollCalculator: React.FC = () => {
             <section className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-in fade-in slide-in-from-top-4">
               <div className="bg-slate-900 p-5 rounded-3xl text-white">
                 <div className="text-[10px] text-indigo-400 font-bold uppercase mb-1">Yıllık Brüt</div>
-                <div className="text-lg font-black">{summary.yillikToplamBrut.toLocaleString('tr-TR')} TL</div>
+                <div className="text-lg font-black">{(summary.yillikToplamBrut || 0).toLocaleString('tr-TR')} TL</div>
               </div>
               <div className="bg-indigo-600 p-5 rounded-3xl text-white">
                 <div className="text-[10px] text-indigo-100 font-bold uppercase mb-1">Yıllık Net</div>
-                <div className="text-lg font-black">{summary.yillikToplamNet.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} TL</div>
+                <div className="text-lg font-black">{(summary.yillikToplamNet || 0).toLocaleString('tr-TR', { maximumFractionDigits: 0 })} TL</div>
               </div>
               <div className="bg-white border border-slate-200 p-5 rounded-3xl">
                 <div className="text-[10px] text-rose-500 font-bold uppercase mb-1">Toplam Vergi</div>
-                <div className="text-lg font-black text-slate-900">{summary.yillikToplamVergi.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} TL</div>
+                <div className="text-lg font-black text-slate-900">{(summary.yillikToplamVergi || 0).toLocaleString('tr-TR', { maximumFractionDigits: 0 })} TL</div>
               </div>
               <div className="bg-white border border-slate-200 p-5 rounded-3xl">
                 <div className="text-[10px] text-emerald-600 font-bold uppercase mb-1">Toplam SGK</div>
-                <div className="text-lg font-black text-slate-900">{summary.yillikToplamSGK.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} TL</div>
+                <div className="text-lg font-black text-slate-900">{(summary.yillikToplamSGK || 0).toLocaleString('tr-TR', { maximumFractionDigits: 0 })} TL</div>
               </div>
             </section>
           )}
@@ -222,17 +222,17 @@ const PayrollCalculator: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {monthlyResults.map((m, idx) => (
-                      <tr key={m.ay} className={`group hover:bg-slate-50 transition-colors ${idx > 0 && monthlyResults[idx-1].netMaas > m.netMaas ? 'bg-amber-50/30' : ''}`}>
+                    {(monthlyResults || []).map((m, idx) => (
+                      <tr key={m.ay} className={`group hover:bg-slate-50 transition-colors ${idx > 0 && monthlyResults[idx-1]?.netMaas > m.netMaas ? 'bg-amber-50/30' : ''}`}>
                         <td className="px-6 py-4 font-bold text-slate-900 border-r border-slate-100">{m.ay}</td>
                         <td className="px-6 py-4 font-black text-indigo-600 tabular-nums">
-                          {m.netMaas.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} TL
+                          {(m.netMaas || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} TL
                         </td>
                         <td className="px-6 py-4 text-xs font-bold text-rose-500 tabular-nums">
-                          {(m.gv + m.dv).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} TL
+                          {((m.gv || 0) + (m.dv || 0)).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} TL
                         </td>
                         <td className="px-6 py-4 text-xs font-medium text-slate-400 tabular-nums">
-                          {m.kesinti.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} TL
+                          {(m.kesinti || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} TL
                         </td>
                         <td className="px-6 py-4">
                           <span className={`text-[9px] font-black px-2 py-0.5 rounded-md ${

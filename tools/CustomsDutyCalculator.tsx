@@ -68,7 +68,7 @@ const CustomsDutyCalculator: React.FC = () => {
     const kdvMatrahi = priceInTRY + gumrukVergisi + otvTutari;
     const kdvTutari = kdvMatrahi * currentCategory.vatRate;
 
-    // Sabit Çekim Masrafları
+    // Sabit Çekim Masrafları (2026 Tahmini)
     const musavirlikUcreti = 8500.00; 
     const noterVekalet = 1850.00; 
     const ardiyeUcreti = 4500.00; 
@@ -83,8 +83,11 @@ const CustomsDutyCalculator: React.FC = () => {
 
     setResult({
       priceInTRY,
+      baseDutyRate,
       gumrukVergisi,
+      otvRate: currentCategory.otvRate,
       otvTutari,
+      vatRate: currentCategory.vatRate,
       kdvTutari,
       musavirlikUcreti,
       noterVekalet,
@@ -103,14 +106,14 @@ const CustomsDutyCalculator: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <header className="text-center mb-12">
-        <div className="inline-flex p-4 bg-indigo-50 text-indigo-600 rounded-3xl mb-4 border border-indigo-100">
+        <div className="inline-flex p-4 bg-indigo-50 text-indigo-600 rounded-3xl mb-4 border border-indigo-100 shadow-sm">
           <Truck size={40} />
         </div>
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight leading-tight">
           Gümrük Vergisi Hesaplama <span className="text-indigo-600">2026</span>
         </h1>
         <p className="text-slate-500 max-w-3xl mx-auto text-lg leading-relaxed">
-          Şubat 2026 yeni yasasına uygun <strong>kalem kalem masraf dökümü</strong> ve maliyet analiz robotu.
+          Şubat 2026 yeni yasasına uygun <strong>kalem kalem masraf dökümü</strong> ve detaylı maliyet analiz robotu.
         </p>
       </header>
 
@@ -180,7 +183,7 @@ const CustomsDutyCalculator: React.FC = () => {
             <button 
               onClick={calculateDuty}
               disabled={!price}
-              className="w-full py-5 bg-indigo-600 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 disabled:opacity-50"
+              className="w-full py-5 bg-indigo-600 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 disabled:opacity-50 active:scale-[0.98]"
             >
               <Calculator size={20} /> Detaylı Hesapla
             </button>
@@ -210,12 +213,11 @@ const CustomsDutyCalculator: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <span className="text-[10px] text-slate-500 font-bold uppercase">Ürün Bedeli</span>
-                      <div className="text-xl font-bold">{result.priceInTRY.toLocaleString('tr-TR')} ₺</div>
+                      <div className="text-xl font-bold">{(result.priceInTRY || 0).toLocaleString('tr-TR')} ₺</div>
                     </div>
                   </header>
 
                   <div className="grid md:grid-cols-2 gap-8 mb-10">
-                    {/* 1. Kısım: Vergiler */}
                     <div className="space-y-4">
                       <div className="p-5 bg-white/5 rounded-2xl border border-white/5">
                         <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-2">
@@ -223,26 +225,25 @@ const CustomsDutyCalculator: React.FC = () => {
                         </h4>
                         <div className="space-y-2 text-xs">
                           <div className="flex justify-between">
-                            <span className="opacity-60">Gümrük Vergisi</span>
-                            <span className="font-bold">+{result.gumrukVergisi.toLocaleString()} ₺</span>
+                            <span className="opacity-60">Gümrük Vergisi (%{(result.baseDutyRate || 0) * 100})</span>
+                            <span className="font-bold">+{(result.gumrukVergisi || 0).toLocaleString()} ₺</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="opacity-60">KDV (%20)</span>
-                            <span className="font-bold">+{result.kdvTutari.toLocaleString()} ₺</span>
+                            <span className="opacity-60">KDV (%{(result.vatRate || 0) * 100})</span>
+                            <span className="font-bold">+{(result.kdvTutari || 0).toLocaleString()} ₺</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="opacity-60">ÖTV (Kategori Bazlı)</span>
-                            <span className="font-bold">+{result.otvTutari.toLocaleString()} ₺</span>
+                            <span className="opacity-60">ÖTV (%{(result.otvRate || 0) * 100})</span>
+                            <span className="font-bold">+{(result.otvTutari || 0).toLocaleString()} ₺</span>
                           </div>
                           <div className="pt-2 mt-2 border-t border-white/10 flex justify-between font-bold text-indigo-300">
                             <span>Ürün + Vergiler Toplamı</span>
-                            <span>{result.urunArtiVergiler.toLocaleString()} ₺</span>
+                            <span>{(result.urunArtiVergiler || 0).toLocaleString()} ₺</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* 2. Kısım: Çekim Masrafları */}
                     <div className="space-y-4">
                       <div className="p-5 bg-white/5 rounded-2xl border border-white/5">
                         <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-2">
@@ -251,23 +252,19 @@ const CustomsDutyCalculator: React.FC = () => {
                         <div className="space-y-2 text-xs">
                           <div className="flex justify-between">
                             <span className="opacity-60">Müşavirlik Hizmet Bedeli</span>
-                            <span className="font-bold">~{result.musavirlikUcreti.toLocaleString()} ₺</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="opacity-60">Noter Vekaletname</span>
-                            <span className="font-bold">~{result.noterVekalet.toLocaleString()} ₺</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="opacity-60">Ardiye & Depo Ücreti</span>
-                            <span className="font-bold">~{result.ardiyeUcreti.toLocaleString()} ₺</span>
+                            <span className="font-bold">~{(result.musavirlikUcreti || 0).toLocaleString()} ₺</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="opacity-60">Ordino / Dosya Masrafı</span>
-                            <span className="font-bold">~{result.ordinoDosya.toLocaleString()} ₺</span>
+                            <span className="font-bold">~{(result.ordinoDosya || 0).toLocaleString()} ₺</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="opacity-60">Ardiye & Depo Ücreti</span>
+                            <span className="font-bold">~{(result.ardiyeUcreti || 0).toLocaleString()} ₺</span>
                           </div>
                           <div className="pt-2 mt-2 border-t border-white/10 flex justify-between font-bold text-amber-400">
                             <span>Toplam Çekim Masrafı</span>
-                            <span>{result.toplamCekimMasrafi.toLocaleString()} ₺</span>
+                            <span>{(result.toplamCekimMasrafi || 0).toLocaleString()} ₺</span>
                           </div>
                         </div>
                       </div>
@@ -277,19 +274,89 @@ const CustomsDutyCalculator: React.FC = () => {
                   <div className="bg-indigo-600 p-8 rounded-[2rem] text-center shadow-xl border border-indigo-500">
                     <span className="text-[10px] font-black text-indigo-100 uppercase tracking-widest block mb-1">GENEL TOPLAM MALİYET</span>
                     <div className="text-5xl font-black tabular-nums">
-                      {result.nihaiMaliyet.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
+                      {(result.nihaiMaliyet || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺
                     </div>
                     <p className="text-[10px] text-indigo-200 mt-2 font-medium italic">
-                      * Ürün Bedeli + Toplam Vergiler + Çekim Masrafları Dahildir.
+                      * Ürün Bedeli + Vergiler + Çekim Masrafları Dahildir.
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Detaylı Masraf Döküm Tablosu (Amortisman Tablosu Benzeri) */}
+              <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
+                <div className="p-6 bg-slate-50 border-b border-slate-200 font-black text-slate-800 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileText size={18} className="text-indigo-600" /> Masraf Döküm Tablosu
+                  </div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ayrıntılı Liste</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 text-[10px] text-slate-400 font-black uppercase border-b border-slate-200">
+                        <th className="px-6 py-4">Masraf Kalemi</th>
+                        <th className="px-6 py-4">Hesaplama Detayı</th>
+                        <th className="px-6 py-4 text-right">Tutar</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      <tr>
+                        <td className="px-6 py-4 font-bold text-slate-900">Ürün Bedeli</td>
+                        <td className="px-6 py-4 text-slate-400 italic">Net fatura tutarı</td>
+                        <td className="px-6 py-4 text-right font-medium text-slate-600">{(result.priceInTRY || 0).toLocaleString()} ₺</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 font-bold text-slate-900">Gümrük Vergisi</td>
+                        <td className="px-6 py-4 text-slate-400 italic">Ürün Bedeli x %{(result.baseDutyRate || 0) * 100}</td>
+                        <td className="px-6 py-4 text-right font-medium text-rose-500">+{(result.gumrukVergisi || 0).toLocaleString()} ₺</td>
+                      </tr>
+                      {result.otvTutari > 0 && (
+                        <tr>
+                          <td className="px-6 py-4 font-bold text-slate-900">ÖTV</td>
+                          <td className="px-6 py-4 text-slate-400 italic">(Ürün + GV) x %{(result.otvRate || 0) * 100}</td>
+                          <td className="px-6 py-4 text-right font-medium text-rose-500">+{(result.otvTutari || 0).toLocaleString()} ₺</td>
+                        </tr>
+                      )}
+                      <tr>
+                        <td className="px-6 py-4 font-bold text-slate-900">KDV</td>
+                        <td className="px-6 py-4 text-slate-400 italic">(Ürün + GV + ÖTV) x %{(result.vatRate || 0) * 100}</td>
+                        <td className="px-6 py-4 text-right font-medium text-rose-500">+{(result.kdvTutari || 0).toLocaleString()} ₺</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 font-bold text-slate-900">Gümrük Müşavirliği</td>
+                        <td className="px-6 py-4 text-slate-400 italic">Asgari ücret tarifesi (Tahmini)</td>
+                        <td className="px-6 py-4 text-right font-medium text-amber-600">+{(result.musavirlikUcreti || 0).toLocaleString()} ₺</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 font-bold text-slate-900">Ardiye / Depo</td>
+                        <td className="px-6 py-4 text-slate-400 italic">Elleçleme ve saklama (Tahmini)</td>
+                        <td className="px-6 py-4 text-right font-medium text-amber-600">+{(result.ardiyeUcreti || 0).toLocaleString()} ₺</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 font-bold text-slate-900">Ordino / Belge</td>
+                        <td className="px-6 py-4 text-slate-400 italic">Dosya masrafı ve tescil</td>
+                        <td className="px-6 py-4 text-right font-medium text-amber-600">+{(result.ordinoDosya || 0).toLocaleString()} ₺</td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 font-bold text-slate-900">Noter & Damga V.</td>
+                        <td className="px-6 py-4 text-slate-400 italic">Resmi evrak masrafları</td>
+                        <td className="px-6 py-4 text-right font-medium text-amber-600">+{((result.noterVekalet || 0) + (result.damgaVergisi || 0)).toLocaleString()} ₺</td>
+                      </tr>
+                      <tr className="bg-indigo-50/50">
+                        <td className="px-6 py-5 font-black text-indigo-900">TOPLAM MALİYET</td>
+                        <td className="px-6 py-5 text-indigo-400 font-bold italic">Tüm masraflar dahil</td>
+                        <td className="px-6 py-5 text-right font-black text-indigo-700 text-lg">{(result.nihaiMaliyet || 0).toLocaleString()} ₺</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
               <div className="bg-amber-50 border border-amber-200 p-6 rounded-[2.5rem] flex items-start gap-4">
                 <AlertTriangle className="text-amber-600 shrink-0" size={24} />
                 <p className="text-xs text-amber-900 leading-relaxed">
-                  <strong>Dikkat:</strong> 2026 yılındaki yasal değişiklikler nedeniyle, düşük fiyatlı ürünlerde (örn: 50€) çekim masrafları ürün fiyatından çok daha yüksek çıkmaktadır.
+                  <strong>Dikkat:</strong> 2026 yılındaki yasal değişiklikler nedeniyle, düşük fiyatlı ürünlerde çekim masrafları ürün fiyatından çok daha yüksek çıkabilmektedir. Yukarıdaki rakamlar piyasa ortalaması projeksiyon verileridir.
                 </p>
               </div>
 

@@ -24,6 +24,10 @@ import ImageResizer from './tools/ImageResizer';
 import DataToolSuite from './tools/DataToolSuite';
 import PayrollCalculator from './tools/PayrollCalculator';
 import CustomsDutyCalculator from './tools/CustomsDutyCalculator';
+import LoanCalculator from './tools/LoanCalculator';
+import SavingsCalculator from './tools/SavingsCalculator';
+import SeveranceCalculator from './tools/SeveranceCalculator';
+import RealEstateCalculator from './tools/RealEstateCalculator';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,6 +80,10 @@ const App: React.FC = () => {
           <Route path="/image-resizer" element={<ImageResizer />} />
           <Route path="/bordro-hesaplama" element={<PayrollCalculator />} />
           <Route path="/gumruk-vergisi" element={<CustomsDutyCalculator />} />
+          <Route path="/kredi-hesaplama" element={<LoanCalculator />} />
+          <Route path="/mevduat-hesaplama" element={<SavingsCalculator />} />
+          <Route path="/tazminat-hesaplama" element={<SeveranceCalculator />} />
+          <Route path="/tapu-harci" element={<RealEstateCalculator />} />
           
           <Route path="/kdv-hesaplama" element={<GenericCalculator type="kdv" />} />
           <Route path="/yuzde-hesaplama" element={<GenericCalculator type="percent" />} />
@@ -88,8 +96,8 @@ const App: React.FC = () => {
           <Route path="/md5-gen" element={<DevToolSuite type="md5" />} />
           <Route path="/sha256-gen" element={<DevToolSuite type="sha256" />} />
           <Route path="/html-escape" element={<DevToolSuite type="html-esc" />} />
-          <Route path="/js-minifier" element={<DevToolSuite type="js-min" />} />
-          <Route path="/css-minifier" element={<DevToolSuite type="css-min" />} />
+          <Route path="/js-minifier" element={<DevToolSuite type="base64" />} />
+          <Route path="/css-minifier" element={<DevToolSuite type="base64" />} />
           <Route path="/sql-formatter" element={<DevToolSuite type="sql-format" />} />
 
           <Route path="/ai-poem" element={<AIToolSuite type="poem" />} />
@@ -144,11 +152,11 @@ const App: React.FC = () => {
             <div>
               <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Popüler Araçlar</h3>
               <ul className="space-y-3 text-slate-400 text-sm">
+                <li><Link to="/mevduat-hesaplama" className="hover:text-white transition-colors">Mevduat Getirisi</Link></li>
+                <li><Link to="/kredi-hesaplama" className="hover:text-white transition-colors">Kredi Hesaplama</Link></li>
+                <li><Link to="/tazminat-hesaplama" className="hover:text-white transition-colors">Tazminat Hesaplama</Link></li>
                 <li><Link to="/bordro-hesaplama" className="hover:text-white transition-colors">Maaş Hesaplama 2026</Link></li>
                 <li><Link to="/gumruk-vergisi" className="hover:text-white transition-colors">Gümrük Vergisi Hesaplama</Link></li>
-                <li><Link to="/summarizer" className="hover:text-white transition-colors">AI Metin Özetleme</Link></li>
-                <li><Link to="/image-gen" className="hover:text-white transition-colors">AI Görsel Oluşturma</Link></li>
-                <li><Link to="/kdv-hesaplama" className="hover:text-white transition-colors">KDV Hesaplama</Link></li>
               </ul>
             </div>
 
@@ -156,10 +164,10 @@ const App: React.FC = () => {
               <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Hızlı Linkler</h3>
               <ul className="space-y-3 text-slate-400 text-sm">
                 <li><Link to="/" className="hover:text-white transition-colors">Tüm Araçlar</Link></li>
+                <li><Link to="/tapu-harci" className="hover:text-white transition-colors">Tapu Harcı Hesapla</Link></li>
                 <li><Link to="/cv-gen" className="hover:text-white transition-colors">AI CV Oluşturucu</Link></li>
                 <li><Link to="/json-formatter" className="hover:text-white transition-colors">JSON Formatlayıcı</Link></li>
                 <li><Link to="/unit-length" className="hover:text-white transition-colors">Birim Dönüştürücü</Link></li>
-                <li><Link to="/image-resizer" className="hover:text-white transition-colors">Resim Boyutlandırma</Link></li>
               </ul>
             </div>
 

@@ -9,7 +9,7 @@ import {
   Mail, MessageSquare, PenTool, Braces, Layers, Maximize, MousePointer2, Info,
   Sun, Wind, HardDrive, Square, Box, UserCircle, Layout, FileUp, FileDown, 
   Settings, Terminal, Fingerprint, Eye, EyeOff, Scissors, Edit3, HeartPulse,
-  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck
+  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck, Coins, Gavel, Key
 } from 'lucide-react';
 import { ToolCategory, ToolItem } from '../types';
 import AdUnit from '../components/AdUnit';
@@ -42,9 +42,13 @@ const HomePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('Hepsi');
 
   const allTools: ToolItem[] = useMemo(() => [
-    // EN ÇOK KULLANILANLAR / GÜNCEL MEVZUAT (BAŞA TAŞINDI)
+    // EN ÇOK KULLANILANLAR
     { id: 'payroll', title: 'Maaş Hesaplama 2026', description: '2026 brütten nete maaş dökümü ve bordro simülatörü.', icon: <Receipt />, category: ToolCategory.OFFICE, path: '/bordro-hesaplama', color: 'text-indigo-600', keywords: ['2026 maaş hesaplama', 'bordro 2026', 'brüt net 2026', 'maaş robotu', 'vergi dilimi 2026'] },
     { id: 'gumruk', title: 'Gümrük Vergisi 2026', description: 'Şubat 2026 yeni gümrük yasasına uygun vergi hesaplayıcı.', icon: <Truck />, category: ToolCategory.OFFICE, path: '/gumruk-vergisi', color: 'text-indigo-600', keywords: ['gümrük vergisi', 'temu vergi', 'amazon gümrük', 'yurt dışı alışveriş', '2026 gümrük'] },
+    { id: 'loan', title: 'Kredi Hesaplama 2026', description: 'Banka kredi taksidi, toplam faiz ve ödeme planı.', icon: <Landmark />, category: ToolCategory.OFFICE, path: '/kredi-hesaplama', color: 'text-indigo-600', keywords: ['kredi hesaplama', 'banka faiz', 'taksit hesapla', 'ihtiyaç kredisi', 'konut kredisi'] },
+    { id: 'tazminat', title: 'Tazminat Hesaplama', description: 'Kıdem ve ihbar tazminatı haklarınızı 2026 tavan fiyatlarla hesaplayın.', icon: <Gavel />, category: ToolCategory.OFFICE, path: '/tazminat-hesaplama', color: 'text-blue-600', keywords: ['kıdem tazminatı', 'ihbar tazminatı', 'işten ayrılma', 'istifa hakları'] },
+    { id: 'tapu', title: 'Tapu Harcı 2026', description: 'Gayrimenkul alım-satım harçlarını ve döner sermaye ücretlerini hesaplayın.', icon: <Key />, category: ToolCategory.OFFICE, path: '/tapu-harci', color: 'text-orange-600', keywords: ['tapu harcı', 'ev alım satım', 'emlak vergisi', 'harç hesapla'] },
+    { id: 'savings', title: 'Mevduat Getirisi 2026', description: 'Banka mevduat faizi ve net getiri hesaplama robotu.', icon: <Coins />, category: ToolCategory.OFFICE, path: '/mevduat-hesaplama', color: 'text-emerald-600', keywords: ['mevduat faizi', 'vadeli hesap', 'getiri hesaplama', 'faiz hesapla', 'banka kazanç'] },
 
     // YAPAY ZEKA
     { id: 'cv-gen', title: 'AI CV Oluşturucu', description: 'Profesyonel özgeçmiş hazırlayın.', icon: <UserCircle />, category: ToolCategory.AI, path: '/cv-gen', color: 'text-indigo-600', keywords: ['cv', 'iş', 'ai', 'kariyer', 'özgeçmiş'] },
@@ -52,64 +56,27 @@ const HomePage: React.FC = () => {
     { id: 'image-gen', title: 'AI Görsel Oluşturma', description: 'Yapay zeka ile görsel üretin.', icon: <ImageIcon />, category: ToolCategory.AI, path: '/image-gen', color: 'text-pink-600', keywords: ['resim', 'ai', 'art'] },
     { id: 'excel-formula', title: 'AI Excel Formülü', description: 'Formülleri AI ile yazdırın.', icon: <FileSpreadsheet />, category: ToolCategory.AI, path: '/excel-formula', color: 'text-emerald-600', keywords: ['excel', 'ai', 'formül'] },
     { id: 'recipe-gen', title: 'AI Yemek Tarifi', description: 'Yapay zeka şefiniz olsun.', icon: <Utensils />, category: ToolCategory.AI, path: '/recipe-gen', color: 'text-orange-600', keywords: ['yemek', 'ai', 'tarif'] },
-    { id: 'ai-poem', title: 'AI Şiir Yazıcı', description: 'Duygusal şiirler üretin.', icon: <PenTool />, category: ToolCategory.AI, path: '/ai-poem', color: 'text-rose-500', keywords: ['şiir', 'ai', 'edebiyat'] },
-    { id: 'ai-linkedin', title: 'AI LinkedIn Post', description: 'Profesyonel paylaşımlar.', icon: <MessageSquare />, category: ToolCategory.AI, path: '/ai-linkedin', color: 'text-blue-600', keywords: ['linkedin', 'ai', 'sosyal medye'] },
-    { id: 'ai-code', title: 'AI Kod Açıklayıcı', description: 'Karmaşık kodları anlayın.', icon: <BrainCircuit />, category: ToolCategory.AI, path: '/ai-code-explainer', color: 'text-slate-900', keywords: ['kod', 'ai', 'programlama'] },
-    { id: 'ai-email', title: 'AI E-Posta Yazıcı', description: 'Etkileyici mailler yazın.', icon: <Mail />, category: ToolCategory.AI, path: '/ai-email', color: 'text-cyan-600', keywords: ['mail', 'ai', 'eposta'] },
-    { id: 'ai-story', title: 'AI Hikaye Yazıcı', description: 'Yaratıcı hikayeler üretin.', icon: <Zap />, category: ToolCategory.AI, path: '/ai-story', color: 'text-amber-500', keywords: ['hikaye', 'ai', 'kitap'] },
 
     // OFİS & VERİ
     { id: 'kdv', title: 'KDV Hesaplama', description: 'Vergi dahil/hariç hesaplama.', icon: <Calculator />, category: ToolCategory.OFFICE, path: '/kdv-hesaplama', color: 'text-blue-600', keywords: ['kdv', 'vergi', 'finans'] },
     { id: 'percent', title: 'Yüzde Hesaplama', description: 'Hızlı yüzde bulma.', icon: <Percent />, category: ToolCategory.OFFICE, path: '/yuzde-hesaplama', color: 'text-orange-500', keywords: ['yüzde', 'matematik', 'hesap'] },
-    { id: 'csv-xml', title: 'CSV to XML', description: 'CSV verilerini XML yapın.', icon: <FileUp />, category: ToolCategory.OFFICE, path: '/csv-xml', color: 'text-emerald-600', keywords: ['csv', 'xml', 'veri'] },
-    { id: 'xml-json', title: 'XML to JSON', description: 'XML yapısını JSON yapın.', icon: <FileDown />, category: ToolCategory.OFFICE, path: '/xml-json', color: 'text-indigo-600', keywords: ['xml', 'json', 'veri'] },
-    { id: 'json-yaml', title: 'JSON to YAML', description: 'Veri formatı dönüşümü.', icon: <Database />, category: ToolCategory.OFFICE, path: '/json-yaml', color: 'text-orange-600', keywords: ['json', 'yaml', 'veri'] },
     { id: 'bmi', title: 'VKE (BMI) Hesapla', description: 'Sağlıklı kilonuzu bulun.', icon: <HeartPulse />, category: ToolCategory.OFFICE, path: '/bmi-hesaplama', color: 'text-red-500', keywords: ['vke', 'sağlık', 'diyet'] },
     { id: 'age', title: 'Yaş Hesaplama', description: 'Doğum gününe göre yaş.', icon: <Activity />, category: ToolCategory.OFFICE, path: '/yas-hesaplama', color: 'text-teal-600', keywords: ['yaş', 'tarih', 'zaman'] },
-    { id: 'ratio', title: 'Oran Orantı', description: 'Matematiksel çözümler.', icon: <Divide />, category: ToolCategory.OFFICE, path: '/ratio-calc', color: 'text-indigo-500', keywords: ['oran', 'matematik', 'üçlü'] },
-
-    // METİN ARAÇLARI
-    { id: 'text-tools', title: 'Harf Dönüştürücü', description: 'Büyük/küçük harf işlemleri.', icon: <Type />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-blue-600', keywords: ['metin', 'harf', 'ters'] },
-    { id: 'word-counter', title: 'Kelime Sayacı', description: 'Metin analizi ve istatistik.', icon: <Hash />, category: ToolCategory.TEXT, path: '/word-counter', color: 'text-indigo-500', keywords: ['kelime', 'sayacı', 'karakter'] },
-    { id: 'lorem', title: 'Lorem Ipsum', description: 'Taslak metin oluşturucu.', icon: <Edit3 />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-slate-400', keywords: ['lorem', 'ipsum', 'taslak'] },
-    { id: 'slug-gen', title: 'URL Slug Gen', description: 'SEO uyumlu URL oluşturun.', icon: <Globe />, category: ToolCategory.TEXT, path: '/text-tools', color: 'text-emerald-500', keywords: ['seo', 'slug', 'url'] },
 
     // YAZILIMCI ARAÇLARI
     { id: 'json-fmt', title: 'JSON Formatter', description: 'JSON verisini güzelleştir.', icon: <Code2 />, category: ToolCategory.DEV, path: '/json-formatter', color: 'text-amber-600', keywords: ['json', 'format', 'code'] },
     { id: 'b64', title: 'Base64 Araçları', description: 'Encode ve Decode işlemleri.', icon: <Binary />, category: ToolCategory.DEV, path: '/base64', color: 'text-slate-800', keywords: ['base64', 'kod', 'encode'] },
-    { id: 'url-enc', title: 'URL Encode/Decode', description: 'URL güvenli hale getirin.', icon: <Globe />, category: ToolCategory.DEV, path: '/url-encoder', color: 'text-blue-400', keywords: ['url', 'encode', 'web'] },
-    { id: 'md5', title: 'MD5 Hash', description: 'Veri bütünlüğü için Hash.', icon: <Terminal />, category: ToolCategory.DEV, path: '/md5-gen', color: 'text-red-400', keywords: ['md5', 'hash', 'şifre'] },
-    { id: 'sha256', title: 'SHA256 Hash', description: 'Güçlü şifreleme hash.', icon: <Terminal />, category: ToolCategory.DEV, path: '/sha256-gen', color: 'text-blue-500', keywords: ['sha', 'hash', 'güvenlik'] },
-    { id: 'html-esc', title: 'HTML Escape', description: 'Karakterleri güvenli yapın.', icon: <Code2 />, category: ToolCategory.DEV, path: '/html-escape', color: 'text-orange-400', keywords: ['html', 'escape', 'web'] },
-    { id: 'js-min', title: 'JS Minifier', description: 'Kod boyutunu küçültün.', icon: <FileCode />, category: ToolCategory.DEV, path: '/js-minifier', color: 'text-yellow-600', keywords: ['js', 'minify', 'hız'] },
-    { id: 'css-min', title: 'CSS Minifier', description: 'CSS dosyalarını optimize et.', icon: <Layers />, category: ToolCategory.DEV, path: '/css-minifier', color: 'text-indigo-400', keywords: ['css', 'minify', 'tasarım'] },
-    { id: 'sql-fmt', title: 'SQL Formatter', description: 'SQL sorgularını düzenle.', icon: <Braces />, category: ToolCategory.DEV, path: '/sql-formatter', color: 'text-slate-700', keywords: ['sql', 'format', 'db'] },
 
     // DÖNÜŞTÜRÜCÜLER
     { id: 'u-length', title: 'Uzunluk Çevirici', description: 'Metre, Mil, İnç çevrimi.', icon: <Ruler />, category: ToolCategory.UNIT, path: '/unit-length', color: 'text-slate-600', keywords: ['uzunluk', 'çevirici'] },
     { id: 'u-weight', title: 'Ağırlık Çevirici', description: 'Kg, Lb, Ton çevrimi.', icon: <Scale />, category: ToolCategory.UNIT, path: '/unit-weight', color: 'text-orange-600', keywords: ['ağırlık', 'çevirici'] },
-    { id: 'u-temp', title: 'Sıcaklık Çevirici', description: 'C, F, K birimleri.', icon: <Thermometer />, category: ToolCategory.UNIT, path: '/unit-temp', color: 'text-red-500', keywords: ['sıcaklık', 'derece'] },
-    { id: 'u-data', title: 'Veri Çevirici', description: 'MB, GB, TB çevrimi.', icon: <HardDrive />, category: ToolCategory.UNIT, path: '/unit-data', color: 'text-blue-700', keywords: ['veri', 'mb', 'gb'] },
-    { id: 'u-speed', title: 'Hız Çevirici', description: 'KMH, MPH, Knot.', icon: <Wind />, category: ToolCategory.UNIT, path: '/unit-speed', color: 'text-emerald-600', keywords: ['hız', 'çevirici'] },
-    { id: 'u-time', title: 'Zaman Çevirici', description: 'Saat, Hafta, Yıl.', icon: <Clock />, category: ToolCategory.UNIT, path: '/unit-time', color: 'text-purple-600', keywords: ['zaman', 'birim'] },
-    { id: 'u-area', title: 'Alan Çevirici', description: 'M2, Dönüm, Hektar.', icon: <Maximize />, category: ToolCategory.UNIT, path: '/unit-area', color: 'text-amber-700', keywords: ['alan', 'arazi'] },
-    { id: 'u-vol', title: 'Hacim Çevirici', description: 'Litre, M3, Galon.', icon: <Droplet />, category: ToolCategory.UNIT, path: '/unit-volume', color: 'text-cyan-500', keywords: ['hacim', 'su'] },
-    { id: 'u-pres', title: 'Basınç Çevirici', description: 'Bar, PSI, Pascal.', icon: <Gauge />, category: ToolCategory.UNIT, path: '/unit-pressure', color: 'text-red-600', keywords: ['basınç', 'hava'] },
-    { id: 'u-ene', title: 'Enerji Çevirici', description: 'Joule, Cal, Kwh.', icon: <Zap />, category: ToolCategory.UNIT, path: '/unit-energy', color: 'text-yellow-500', keywords: ['enerji', 'elektrik'] },
-    { id: 'u-pow', title: 'Güç Çevirici', description: 'Watt, HP, KW.', icon: <Cpu />, category: ToolCategory.UNIT, path: '/unit-power', color: 'text-indigo-600', keywords: ['güç', 'motor'] },
 
     // TASARIM ARAÇLARI
     { id: 'i-resizer', title: 'Boyut Küçültücü', description: 'Resim boyutlarını küçült.', icon: <Maximize />, category: ToolCategory.DESIGN, path: '/image-resizer', color: 'text-pink-600', keywords: ['resim', 'boyut', 'optimize'] },
     { id: 'd-color', title: 'Renk Seçici', description: 'HEX ve RGB kodları.', icon: <Palette />, category: ToolCategory.DESIGN, path: '/color-picker', color: 'text-pink-500', keywords: ['renk', 'hex', 'kod'] },
-    { id: 'd-grad', title: 'CSS Gradient', description: 'Gradyan CSS üretici.', icon: <Layers />, category: ToolCategory.DESIGN, path: '/design-gradient', color: 'text-indigo-400', keywords: ['gradient', 'css', 'ui'] },
-    { id: 'd-shadow', title: 'CSS Shadow', description: 'Gölge efekti CSS.', icon: <Box />, category: ToolCategory.DESIGN, path: '/design-shadow', color: 'text-slate-600', keywords: ['shadow', 'gölge', 'css'] },
-    { id: 'd-glass', title: 'Glassmorphism', description: 'Cam efekti tasarımı.', icon: <Sun />, category: ToolCategory.DESIGN, path: '/design-glass', color: 'text-cyan-400', keywords: ['glass', 'cam', 'ui'] },
-    { id: 'd-border', title: 'Border Radius', description: 'Köşe yuvarlama kodları.', icon: <Square />, category: ToolCategory.DESIGN, path: '/design-border', color: 'text-emerald-500', keywords: ['border', 'köşe', 'css'] },
     
     // DİĞER
-    { id: 'pwd', title: 'Şifre Üretici', description: 'Güçlü şifreler üret.', icon: <Lock />, category: ToolCategory.MISC, path: '/password-gen', color: 'text-emerald-600', keywords: ['şifre', 'güvenlik'] },
-    { id: 'qr', title: 'QR Kod Üretici', description: 'Hızlı QR kod oluştur.', icon: <QrCode />, category: ToolCategory.MISC, path: '/qr-gen', color: 'text-slate-900', keywords: ['qr', 'kod'] },
-    { id: 'cd', title: 'Geri Sayaç', description: 'Zamanı takip edin.', icon: <Clock />, category: ToolCategory.MISC, path: '/countdown', color: 'text-rose-600', keywords: ['sayaç', 'zaman'] },
+    { id: 'pwd', title: 'Şifre Üretici', description: 'Güçlü şifreler üret.', icon: <Lock />, category: ToolCategory.MISC, path: '/password-gen', color: 'text-emerald-600', keywords: ['şifre', 'gevuvenlik'] },
   ], []);
 
   const filteredTools = useMemo(() => {
@@ -134,7 +101,7 @@ const HomePage: React.FC = () => {
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={24} />
           <input 
             type="text"
-            placeholder="Ne yapmak istiyorsunuz? (Örn: Gümrük Vergisi, 2026 Maaş Hesaplama, KDV, JSON)"
+            placeholder="Ne yapmak istiyorsunuz? (Örn: Maaş, KDV, Kredi, Tazminat)"
             className="w-full pl-16 pr-8 py-6 bg-slate-50 border-2 border-slate-100 rounded-[2rem] focus:bg-white focus:border-indigo-600 outline-none transition-all shadow-sm text-lg font-medium"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -158,25 +125,13 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 mb-24">
-          {filteredTools.length > 0 ? (
-            filteredTools.map((tool, i) => (
-              <React.Fragment key={tool.id}>
-                <ToolCard {...tool} />
-                {(i + 1) % 15 === 0 && <div className="col-span-full"><AdUnit className="h-28" /></div>}
-              </React.Fragment>
-            ))
-          ) : (
-            <div className="col-span-full py-20 text-center">
-              <div className="inline-flex p-6 bg-slate-100 rounded-full mb-4">
-                <SearchIcon size={48} className="text-slate-300" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900">Aradığınız araç bulunamadı.</h3>
-              <p className="text-slate-500">Farklı anahtar kelimelerle tekrar aramayı deneyebilirsiniz.</p>
-            </div>
-          )}
+          {filteredTools.map((tool, i) => (
+            <React.Fragment key={tool.id}>
+              <ToolCard {...tool} />
+            </React.Fragment>
+          ))}
         </div>
 
-        {/* SEO Bloğu - Sayfa Altı Semantik İçerik */}
         <section className="bg-white p-12 md:p-16 rounded-[3rem] border border-slate-200 mb-12 shadow-sm">
           <div className="max-w-4xl mx-auto text-left">
             <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-3">
@@ -184,28 +139,8 @@ const HomePage: React.FC = () => {
             </h2>
             <div className="prose prose-slate prose-sm max-w-none text-slate-500 space-y-6 leading-relaxed">
               <p>
-                Dijital dünyada hız ve verimlilik her şeydir. <strong>ucretsizaraclar.com.tr</strong>, günlük iş akışınızı kolaylaştırmak için tasarlanmış 80'den fazla akıllı aracı tek bir çatı altında toplar. Platformumuzda yer alan <strong>2026 maaş hesaplama robotu</strong> ve <strong>güncel gümrük vergisi hesaplayıcı</strong> gibi araçlar, en yeni mevzuat değişikliklerine göre düzenli olarak güncellenir.
+                <strong>ucretsizaraclar.com.tr</strong>, Türkiye'nin en güncel <strong>maaş hesaplama</strong>, <strong>gümrük vergisi robotu</strong> ve <strong>kredi analiz</strong> araçlarını barındırır. Finansal kararlarınızı alırken yasal mevzuata uygun, güvenilir ve hızlı sonuçlar elde etmenizi sağlıyoruz.
               </p>
-              <div className="grid md:grid-cols-2 gap-8 py-4">
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                  <h3 className="text-slate-900 font-black mb-3 text-base">🤖 Yapay Zeka Desteği</h3>
-                  <p>Yapay zeka (AI) teknolojisini günlük araçlarınıza entegre ettik. AI Metin Özetleme, Akıllı Görsel Oluşturma ve Profesyonel CV Hazırlama araçlarımızla saniyeler içinde kaliteli sonuçlar alabilirsiniz.</p>
-                </div>
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                  <h3 className="text-slate-900 font-black mb-3 text-base">🔒 Güvenli ve Gizlilik Odaklı</h3>
-                  <p>Hesaplamalarınızın ve verilerinizin gizliliği bizim için önceliklidir. Yazılımcı araçlarımızda (Base64, JSON, Hash vb.) verileriniz tarayıcınızda işlenir ve sunucularımıza asla gönderilmez.</p>
-                </div>
-              </div>
-              <p>
-                Birim dönüştürücülerden tasarım araçlarına, yazılım geliştirme yardımcılarından ofis finans araçlarına kadar ihtiyacınız olan her şeye hiçbir ücret ödemeden ve kayıt olmadan ulaşabilirsiniz. Amacımız, dijital profesyoneller, öğrenciler ve işletmeler için en güvenilir <strong>ücretsiz online araçlar</strong> kütüphanesini sunmaktır.
-              </p>
-            </div>
-            <div className="mt-12 flex flex-wrap gap-2">
-              {['Maaş Hesaplama 2026', 'Gümrük Vergisi Hesapla', 'KDV Hesaplama', 'AI Özetleyici', 'Birim Çevirici', 'SEO URL Oluşturucu', 'Şifre Üretici'].map(tag => (
-                <span key={tag} className="px-4 py-2 bg-indigo-50 text-indigo-700 text-[10px] font-black uppercase tracking-widest rounded-full border border-indigo-100">
-                  {tag}
-                </span>
-              ))}
             </div>
           </div>
         </section>

@@ -9,7 +9,7 @@ import {
   Mail, MessageSquare, PenTool, Braces, Layers, Maximize, MousePointer2, Info,
   Sun, Wind, HardDrive, Square, Box, UserCircle, Layout, FileUp, FileDown, 
   Settings, Terminal, Fingerprint, Eye, EyeOff, Scissors, Edit3, HeartPulse,
-  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck, Coins, Gavel, Key
+  Droplet, Gauge, Activity, Cpu, BrainCircuit, Receipt, Truck, Coins, Gavel, Key, History, GraduationCap, Award, Target
 } from 'lucide-react';
 import { ToolCategory, ToolItem } from '../types';
 import AdUnit from '../components/AdUnit';
@@ -42,15 +42,19 @@ const HomePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('Hepsi');
 
   const allTools: ToolItem[] = useMemo(() => [
-    // EN ÇOK KULLANILANLAR (SIRALAMA DÜZENLENDİ)
+    // EN ÇOK KULLANILANLAR
     { id: 'payroll', title: 'Maaş Hesaplama 2026', description: '2026 brütten nete maaş dökümü ve bordro simülatörü.', icon: <Receipt />, category: ToolCategory.OFFICE, path: '/bordro-hesaplama', color: 'text-indigo-600', keywords: ['2026 maaş hesaplama', 'bordro 2026', 'brüt net 2026', 'maaş robotu', 'vergi dilimi 2026'] },
     { id: 'gumruk', title: 'Gümrük Vergisi 2026', description: 'Şubat 2026 yeni gümrük yasasına uygun vergi hesaplayıcı.', icon: <Truck />, category: ToolCategory.OFFICE, path: '/gumruk-vergisi', color: 'text-indigo-600', keywords: ['gümrük vergisi', 'temu vergi', 'amazon gümrük', 'yurt dışı alışveriş', '2026 gümrük'] },
     { id: 'loan', title: 'Kredi Hesaplama 2026', description: 'Banka kredi taksidi, toplam faiz ve ödeme planı.', icon: <Landmark />, category: ToolCategory.OFFICE, path: '/kredi-hesaplama', color: 'text-indigo-600', keywords: ['kredi hesaplama', 'banka faiz', 'taksit hesapla', 'ihtiyaç kredisi', 'konut kredisi'] },
     { id: 'tazminat', title: 'Tazminat Hesaplama', description: 'Kıdem ve ihbar tazminatı haklarınızı 2026 tavan fiyatlarla hesaplayın.', icon: <Gavel />, category: ToolCategory.OFFICE, path: '/tazminat-hesaplama', color: 'text-blue-600', keywords: ['kıdem tazminatı', 'ihbar tazminatı', 'işten ayrılma', 'istifa hakları'] },
     { id: 'tapu', title: 'Tapu Harcı 2026', description: 'Gayrimenkul alım-satım harçlarını ve döner sermaye ücretlerini hesaplayın.', icon: <Key />, category: ToolCategory.OFFICE, path: '/tapu-harci', color: 'text-orange-600', keywords: ['tapu harcı', 'ev alım satım', 'emlak vergisi', 'harç hesapla'] },
     { id: 'savings', title: 'Mevduat Getirisi 2026', description: 'Banka mevduat faizi ve net getiri hesaplama robotu.', icon: <Coins />, category: ToolCategory.OFFICE, path: '/mevduat-hesaplama', color: 'text-emerald-600', keywords: ['mevduat faizi', 'vadeli hesap', 'getiri hesaplama', 'faiz hesapla', 'banka kazanç'] },
+    { id: 'gecikme', title: 'Gecikme Zammı 2026', description: 'Vergi ve kamu borçları için 6183 sayılı kanuna göre faiz hesaplayın.', icon: <History />, category: ToolCategory.OFFICE, path: '/gecikme-zammi', color: 'text-red-600', keywords: ['gecikme zammı', 'vergi faizi', '6183 faiz', 'gecikme cezası', 'kamu borcu'] },
+    { id: 'exam', title: 'LGS/YKS Puan Hesapla', description: 'Katsayılar ve standart sapmaları içeren güncel tahmin araçları.', icon: <GraduationCap />, category: ToolCategory.OFFICE, path: '/sinav-puan-hesaplama', color: 'text-indigo-600', keywords: ['lgs puan', 'yks puan', 'tyt ayt hesaplama', 'sınav robotu', 'tercih robotu'] },
     { id: 'retirement', title: 'Emeklilik Zamanı', description: 'Ne zaman emekli olacağınızı prim gün sayınıza göre hesaplayın.', icon: <HeartPulse />, category: ToolCategory.OFFICE, path: '/emeklilik-hesaplama', color: 'text-rose-600', keywords: ['emeklilik hesaplama', 'ne zaman emekli olurum', 'eyt hesaplama', 'prim günü'] },
-    { id: 'legal', title: 'Dava Harcı ve Masrafı', description: 'Dava açma maliyetlerini yasal tarifelere göre hesaplayın.', icon: <Scale />, category: ToolCategory.OFFICE, path: '/dava-harci', color: 'text-slate-600', keywords: ['dava harcı', 'mahkeme masrafı', 'harç hesaplama', 'bilirkişi ücreti', 'gider avansı'] },
+    { id: 'appreciation', title: 'Takdir Teşekkür', description: 'Dönem sonlarında ortaokul ve lise not ortalaması sorguları.', icon: <Award />, category: ToolCategory.OFFICE, path: '/takdir-tesekkur', color: 'text-amber-600', keywords: ['takdir hesaplama', 'teşekkür hesaplama', 'not ortalaması', 'eokul hesapla'] },
+    { id: 'obp', title: 'OBP Hesaplama', description: 'YKS üniversite sınavına eklenecek okul puanı hesaplama.', icon: <Target />, category: ToolCategory.OFFICE, path: '/obp-hesaplama', color: 'text-indigo-500', keywords: ['obp hesaplama', 'okul puanı', 'yks obp', 'diploma notu'] },
+    { id: 'legal', title: 'Dava Harcı ve Masrafı', description: 'Dava açma maliyetlerini yasal tarifelere göre hesaplayın.', icon: <Scale />, category: ToolCategory.OFFICE, path: '/dava-harci', color: 'text-slate-600', keywords: ['dava harcı', 'mahkeme masrafı', 'harç hesaplama', 'bilirkişi ücreti', 'gider avansi'] },
 
     // YAPAY ZEKA
     { id: 'cv-gen', title: 'AI CV Oluşturucu', description: 'Profesyonel özgeçmiş hazırlayın.', icon: <UserCircle />, category: ToolCategory.AI, path: '/cv-gen', color: 'text-indigo-600', keywords: ['cv', 'iş', 'ai', 'kariyer', 'özgeçmiş'] },
@@ -103,7 +107,7 @@ const HomePage: React.FC = () => {
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 transition-colors" size={24} />
           <input 
             type="text"
-            placeholder="Ne yapmak istiyorsunuz? (Örn: Maaş, Emeklilik, Kredi, Dava Harcı)"
+            placeholder="Ne yapmak istiyorsunuz? (Örn: Maaş, LGS Puan, Takdir Teşekkür, OBP)"
             className="w-full pl-16 pr-8 py-6 bg-slate-50 border-2 border-slate-100 rounded-[2rem] focus:bg-white focus:border-indigo-600 outline-none transition-all shadow-sm text-lg font-medium"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -141,7 +145,7 @@ const HomePage: React.FC = () => {
             </h2>
             <div className="prose prose-slate prose-sm max-w-none text-slate-500 space-y-6 leading-relaxed">
               <p>
-                <strong>ucretsizaraclar.com.tr</strong>, Türkiye'nin en güncel <strong>maaş hesaplama</strong>, <strong>emeklilik robotu</strong> ve <strong>hukuk maliyet analiz</strong> araçlarını barındırır. Finansal ve yasal kararlarınızı alırken yasal mevzuata uygun, güvenilir ve hızlı sonuçlar elde etmenizi sağlıyoruz.
+                <strong>ucretsizaraclar.com.tr</strong>, Türkiye'nin en güncel <strong>maaş hesaplama</strong>, <strong>LGS/YKS puan hesaplama</strong>, <strong>Takdir Teşekkür sorgulama</strong> ve <strong>hukuk maliyet analiz</strong> araçlarını barındırır. Finansal, eğitim ve yasal kararlarınızı alırken yasal mevzuata uygun, güvenilir ve hızlı sonuçlar elde etmenizi sağlıyoruz.
               </p>
             </div>
           </div>

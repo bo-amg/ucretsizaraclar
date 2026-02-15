@@ -108,11 +108,15 @@ const SeveranceCalculator: React.FC = () => {
             </button>
           </section>
 
-          <div className="p-8 bg-slate-100 rounded-3xl border border-slate-200 flex items-start gap-4">
-            <AlertTriangle className="text-slate-400 shrink-0" size={24} />
-            <p className="text-[11px] text-slate-500 leading-relaxed italic">
-              <strong>Yasal Uyarı:</strong> Bu araç tarafından sunulan hesaplamalar tahminidir ve sadece bilgi verme amaçlıdır. Mevzuat değişiklikleri, tavan ücreti güncellemeleri veya veri girişleri nedeniyle sapmalar ve yanlışlıklar olabilir. ucretsizaraclar.com.tr bu hesaplamalardan doğabilecek hiçbir yasal sorumluluğu kabul etmez.
-            </p>
+          {/* Yasal Uyarı Kutusu Güncellendi */}
+          <div className="p-8 bg-amber-50 rounded-3xl border-2 border-amber-200 shadow-sm shadow-amber-100 flex items-start gap-4">
+            <AlertTriangle className="text-amber-600 shrink-0 mt-1" size={24} />
+            <div className="space-y-1">
+              <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider">Yasal Uyarı</h4>
+              <p className="text-[11px] text-amber-800 leading-relaxed italic">
+                <strong>Yasal Uyarı:</strong> Bu araç tarafından sunulan hesaplamalar tahminidir ve sadece bilgi verme amaçlıdır. Mevzuat değişiklikleri, tavan ücreti güncellemeleri veya veri girişleri nedeniyle sapmalar ve yanlışlıklar olabilir. ucretsizaraclar.com.tr bu hesaplamalardan doğabilecek hiçbir yasal sorumluluğu kabul etmez.
+              </p>
+            </div>
           </div>
         </div>
 

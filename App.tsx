@@ -30,6 +30,10 @@ import SeveranceCalculator from './tools/SeveranceCalculator';
 import RealEstateCalculator from './tools/RealEstateCalculator';
 import RetirementCalculator from './tools/RetirementCalculator';
 import LegalCostCalculator from './tools/LegalCostCalculator';
+import DelayInterestCalculator from './tools/DelayInterestCalculator';
+import ExamScoreCalculator from './tools/ExamScoreCalculator';
+import AppreciationCalculator from './tools/AppreciationCalculator';
+import ObpCalculator from './tools/ObpCalculator';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -88,6 +92,10 @@ const App: React.FC = () => {
           <Route path="/tapu-harci" element={<RealEstateCalculator />} />
           <Route path="/emeklilik-hesaplama" element={<RetirementCalculator />} />
           <Route path="/dava-harci" element={<LegalCostCalculator />} />
+          <Route path="/gecikme-zammi" element={<DelayInterestCalculator />} />
+          <Route path="/sinav-puan-hesaplama" element={<ExamScoreCalculator />} />
+          <Route path="/takdir-tesekkur" element={<AppreciationCalculator />} />
+          <Route path="/obp-hesaplama" element={<ObpCalculator />} />
           
           <Route path="/kdv-hesaplama" element={<GenericCalculator type="kdv" />} />
           <Route path="/yuzde-hesaplama" element={<GenericCalculator type="percent" />} />
@@ -156,10 +164,10 @@ const App: React.FC = () => {
             <div>
               <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Popüler Araçlar</h3>
               <ul className="space-y-3 text-slate-400 text-sm">
-                <li><Link to="/mevduat-hesaplama" className="hover:text-white transition-colors">Mevduat Getirisi</Link></li>
-                <li><Link to="/kredi-hesaplama" className="hover:text-white transition-colors">Kredi Hesaplama</Link></li>
-                <li><Link to="/dava-harci" className="hover:text-white transition-colors">Dava Harcı Hesapla</Link></li>
                 <li><Link to="/bordro-hesaplama" className="hover:text-white transition-colors">Maaş Hesaplama 2026</Link></li>
+                <li><Link to="/takdir-tesekkur" className="hover:text-white transition-colors">Takdir Teşekkür Hesapla</Link></li>
+                <li><Link to="/sinav-puan-hesaplama" className="hover:text-white transition-colors">YKS Puan Hesaplama</Link></li>
+                <li><Link to="/kredi-hesaplama" className="hover:text-white transition-colors">Kredi Hesaplama</Link></li>
                 <li><Link to="/gumruk-vergisi" className="hover:text-white transition-colors">Gümrük Vergisi Hesaplama</Link></li>
               </ul>
             </div>
@@ -168,7 +176,7 @@ const App: React.FC = () => {
               <h3 className="text-sm font-black uppercase tracking-widest text-indigo-400 mb-6">Hızlı Linkler</h3>
               <ul className="space-y-3 text-slate-400 text-sm">
                 <li><Link to="/" className="hover:text-white transition-colors">Tüm Araçlar</Link></li>
-                <li><Link to="/tapu-harci" className="hover:text-white transition-colors">Tapu Harcı Hesapla</Link></li>
+                <li><Link to="/obp-hesaplama" className="hover:text-white transition-colors">OBP Hesaplama</Link></li>
                 <li><Link to="/cv-gen" className="hover:text-white transition-colors">AI CV Oluşturucu</Link></li>
                 <li><Link to="/json-formatter" className="hover:text-white transition-colors">JSON Formatlayıcı</Link></li>
                 <li><Link to="/unit-length" className="hover:text-white transition-colors">Birim Dönüştürücü</Link></li>

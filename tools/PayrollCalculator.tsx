@@ -262,6 +262,13 @@ const PayrollCalculator: React.FC = () => {
         </div>
       </div>
 
+      <div className="mt-8 p-6 bg-slate-100 rounded-3xl border border-slate-200 flex items-start gap-4 mb-16">
+        <AlertTriangle className="text-slate-400 shrink-0" size={24} />
+        <p className="text-[11px] text-slate-500 leading-relaxed italic">
+          <strong>Önemli Uyarı:</strong> Bu araç tarafından sunulan hesaplamalar tahminidir ve sadece bilgi verme amaçlıdır. Mevzuat değişiklikleri veya hesaplama yöntemlerindeki farklılıklar nedeniyle sapmalar ve yanlışlıklar olabilir. ucretsizaraclar.com.tr bu hesaplamalardan doğabilecek hiçbir yasal sorumluluğu kabul etmez.
+        </p>
+      </div>
+
       {/* Detaylı Bilgilendirme Merkezi */}
       <section className="space-y-12 mb-16">
         <div className="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-sm">
@@ -303,49 +310,10 @@ const PayrollCalculator: React.FC = () => {
               </p>
             </div>
           </div>
-
-          <div className="mt-12 p-8 bg-slate-50 rounded-[2rem] border border-slate-100">
-             <h4 className="font-black text-slate-900 mb-4 flex items-center gap-2">
-               <ShieldCheck size={20} className="text-indigo-600" /> 2026 Yılında Maaşlar Neden Düşecek?
-             </h4>
-             <p className="text-sm text-slate-500 leading-relaxed mb-4">
-               Türkiye'deki vergi sistemi "dilim usulü" çalışır. Brüt maaşınız sabit kalsa bile, yılın ortalarına doğru kümülatif toplamınız 
-               yasal sınırı geçtiği an bir üst vergi dilimine (örneğin %15'ten %20'ye) dahil olursunuz. Bu durum, özellikle yüksek brüt maaşlı çalışanlarda 
-               yılın son aylarında ciddi bir "net maaş kaybı" olarak hissedilir. Aracımız bu kaybı Ocak ayından görmenizi sağlar.
-             </p>
-          </div>
         </div>
-
-        {/* SEO Odaklı Metin Bloğu */}
-        <section className="bg-slate-100 p-12 rounded-[3rem] border border-slate-200">
-          <h2 className="text-2xl font-black text-slate-800 mb-6">Türkiye'nin En Kapsamlı 2026 Bordro ve Maaş Analiz Aracı</h2>
-          <div className="grid md:grid-cols-2 gap-8 text-xs text-slate-500 leading-relaxed">
-            <p>
-              <strong>ucretsizaraclar.com.tr</strong> tarafından sunulan 2026 maaş hesaplama robotu, özel sektör ve kamu çalışanlarının 
-              yeni dönemdeki finansal planlamalarını yapmaları için tasarlanmıştır. Bu araç sadece bir <em>brütten nete hesaplayıcı</em> değil, 
-              aynı zamanda 12 aylık bir finansal simülatördür. 2026 yılı için belirlenen Yeniden Değerleme Oranları (YDO) ve tahmini asgari ücret 
-              verileriyle entegre çalışan algoritmamız, size en gerçekçi sonuçları sunmayı hedefler.
-            </p>
-            <p>
-              Kullanıcılarımızın en çok merak ettiği <strong>"2026 vergi dilimleri ne kadar?"</strong> veya <strong>"Maaşım hangi ay düşecek?"</strong> 
-              gibi soruların yanıtlarını tablomuzda görsel olarak görebilirsiniz. Hesaplama kalemlerimiz arasında SGK İşçi Payı (%14), İşsizlik Sigortası Payı (%1), 
-              Gelir Vergisi (Dilimli) ve Damga Vergisi bulunmaktadır. Tüm bu işlemler tarayıcınızda yapılır ve verileriniz asla sunucularımıza kaydedilmez.
-            </p>
-          </div>
-        </section>
       </section>
 
       <AdUnit className="h-32" />
-
-      {/* SEO Footer Metni */}
-      <footer className="mt-12 py-8 border-t border-slate-200 text-center">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest leading-loose">
-            Etiketler: 2026 Maaş Hesaplama • Brüt Net Hesaplama • Bordro Robotu • Gelir Vergisi Dilimleri 2026 • Asgari Ücret İstisnası 2026 • 
-            Net Maaş Hesaplama • Maaş Kesintileri • SGK Kesintisi Hesapla • Kümülatif Vergi Matrahı Nedir • 2026 Yıllık Maaş Analizi
-          </p>
-        </div>
-      </footer>
     </article>
   );
 };

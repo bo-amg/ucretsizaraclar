@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Home, Calculator, Info, Wallet, PieChart, Landmark, ShieldCheck, Percent, RefreshCw, Scale, Key } from 'lucide-react';
+import { Home, Calculator, Info, Wallet, PieChart, Landmark, ShieldCheck, Percent, RefreshCw, Scale, Key, AlertTriangle } from 'lucide-react';
 import AdUnit from '../components/AdUnit';
 
 const RealEstateCalculator: React.FC = () => {
@@ -17,7 +17,7 @@ const RealEstateCalculator: React.FC = () => {
 
     const aliciHarci = p * 0.02;
     const saticiHarci = p * 0.02;
-    const donerSermaye = 2850.00; // 2026 Tahmini
+    const donerSermaye = 2850.00; 
 
     setResult({
       aliciHarci,
@@ -42,37 +42,29 @@ const RealEstateCalculator: React.FC = () => {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-20">
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 space-y-6">
           <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl space-y-6">
             <div className="space-y-3">
               <label className="text-sm font-bold text-slate-700">Satış Bedeli (₺)</label>
               <input type="number" className="w-full p-4 bg-slate-50 border rounded-2xl outline-none text-xl font-black" value={price} onChange={e => setPrice(e.target.value)} />
-              <p className="text-[10px] text-slate-400">Belediye rayiç bedelinden düşük gösterilmemelidir.</p>
             </div>
             <button onClick={calculateTapu} className="w-full py-5 bg-orange-600 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-orange-700 transition-all shadow-xl shadow-orange-100">
-              <Calculator size={20} /> Masrafları Hesapla
+              <Calculator size={20} /> Hesapla
             </button>
           </section>
+
+          <div className="p-8 bg-slate-100 rounded-3xl border border-slate-200 flex items-start gap-4">
+            <AlertTriangle className="text-slate-400 shrink-0" size={24} />
+            <p className="text-[11px] text-slate-500 leading-relaxed italic">
+              <strong>Yasal Uyarı:</strong> Bu araç tarafından sunulan hesaplamalar tahminidir ve sadece bilgi verme amaçlıdır. Bölgesel rayiç farkları, döner sermaye güncellemeleri veya mevzuat değişiklikleri nedeniyle sapmalar ve yanlışlıklar olabilir. ucretsizaraclar.com.tr bu hesaplamalardan doğabilecek hiçbir yasal sorumluluğu kabul etmez.
+            </p>
+          </div>
         </div>
 
         <div className="lg:col-span-7">
           {result && (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
               <div className="bg-slate-900 text-white p-8 rounded-[2.5rem] shadow-2xl">
-                <div className="grid md:grid-cols-2 gap-8 mb-10">
-                  <div className="p-6 bg-white/5 rounded-3xl border border-white/5">
-                    <div className="text-[10px] text-orange-300 font-bold uppercase mb-1">Alıcı Payı (%2)</div>
-                    <div className="text-3xl font-black">{result.aliciHarci.toLocaleString()} ₺</div>
-                  </div>
-                  <div className="p-6 bg-white/5 rounded-3xl border border-white/5">
-                    <div className="text-[10px] text-orange-300 font-bold uppercase mb-1">Satıcı Payı (%2)</div>
-                    <div className="text-3xl font-black">{result.saticiHarci.toLocaleString()} ₺</div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center text-sm border-t border-white/10 pt-4 mb-8">
-                  <span className="opacity-60 italic">Döner Sermaye Hizmet Bedeli</span>
-                  <span className="font-bold text-orange-400">+{result.donerSermaye.toLocaleString()} ₺</span>
-                </div>
                 <div className="bg-orange-600 p-8 rounded-[2rem] text-center shadow-xl">
                   <span className="text-[10px] font-black text-orange-100 uppercase tracking-widest block mb-1">TOPLAM ÖDENECEK HARÇ</span>
                   <div className="text-5xl font-black">{result.toplamHarc.toLocaleString()} ₺</div>

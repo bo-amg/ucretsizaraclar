@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Landmark, Calculator, Info, Wallet, PieChart, Calendar, ArrowRight, FileText, ChevronRight, TrendingUp, ShieldCheck, Percent, Home, Car, ShoppingBag, Banknote, RefreshCw } from 'lucide-react';
+import { Landmark, Calculator, Info, Wallet, PieChart, Calendar, ArrowRight, FileText, ChevronRight, TrendingUp, ShieldCheck, Percent, Home, Car, ShoppingBag, Banknote, RefreshCw, AlertTriangle } from 'lucide-react';
 import AdUnit from '../components/AdUnit';
 
 interface LoanType {
@@ -68,7 +68,6 @@ const LoanCalculator: React.FC = () => {
   const handleTypeChange = (typeId: string) => {
     const type = loanTypes.find(t => t.id === typeId)!;
     setSelectedType(typeId);
-    // Yeni tip seçildiğinde faiz tipini Aylık'a çekiyoruz
     setInterestType('monthly');
     setInterest(type.defaultInterest);
     setTerm(type.defaultTerm);
@@ -80,11 +79,9 @@ const LoanCalculator: React.FC = () => {
     if (isNaN(currentRate)) return;
 
     if (interestType === 'monthly') {
-      // Aylık -> Yıllık (Basit faiz mantığıyla gösterim)
       setInterestType('yearly');
       setInterest((currentRate * 12).toFixed(2));
     } else {
-      // Yıllık -> Aylık
       setInterestType('monthly');
       setInterest((currentRate / 12).toFixed(2));
     }
@@ -97,23 +94,18 @@ const LoanCalculator: React.FC = () => {
 
     if (isNaN(P) || isNaN(monthlyRateInput) || isNaN(n) || P <= 0) return;
 
-    // Eğer yıllık faiz girildiyse aylığa çeviriyoruz
     if (interestType === 'yearly') {
       monthlyRateInput = monthlyRateInput / 12;
     }
 
     const monthlyRateRaw = monthlyRateInput / 100;
-
-    // Seçili türe göre vergi oranları
     const taxRate = 1 + (currentType.kkdf + currentType.bsmv); 
-    const i = monthlyRateRaw * taxRate; // Efektif aylık faiz (vergili)
+    const i = monthlyRateRaw * taxRate; 
 
-    // Aylık Taksit Formülü: M = P * [i * (1 + i)^n] / [(1 + i)^n - 1]
     const monthlyPayment = (P * i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
     const totalPayment = monthlyPayment * n;
     const totalInterest = totalPayment - P;
 
-    // Ödeme Planı Oluşturma
     let balance = P;
     const schedule = [];
     for (let m = 1; m <= n; m++) {
@@ -153,7 +145,6 @@ const LoanCalculator: React.FC = () => {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-20">
-        {/* Giriş Alanı */}
         <div className="lg:col-span-5 space-y-6">
           <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl space-y-6 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-indigo-600"></div>
@@ -178,7 +169,6 @@ const LoanCalculator: React.FC = () => {
                   </button>
                 ))}
               </div>
-              <p className="text-[10px] text-slate-400 italic px-1">{currentType.description}</p>
             </div>
 
             <div className="space-y-3">
@@ -205,23 +195,13 @@ const LoanCalculator: React.FC = () => {
                   value={term}
                   onChange={(e) => setTerm(e.target.value)}
                 />
-                <div className="flex justify-between text-[9px] text-slate-400 uppercase font-bold tracking-widest px-1">
-                  <span>VADE</span>
-                  <span>MAX {currentType.maxTerm} AY</span>
-                </div>
               </div>
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
-                    <Percent size={16} className="text-indigo-600" /> {interestType === 'monthly' ? 'Aylık' : 'Yıllık'} Faiz (%)
+                    <Percent size={16} className="text-indigo-600" /> Faiz (%)
                   </label>
-                  <button 
-                    onClick={toggleInterestType}
-                    className="text-[9px] font-black text-indigo-600 bg-indigo-50 px-2 py-1 rounded-md hover:bg-indigo-100 transition-colors flex items-center gap-1"
-                  >
-                    <RefreshCw size={10} /> {interestType === 'monthly' ? 'YILLIĞA ÇEVİR' : 'AYLIĞA ÇEVİR'}
-                  </button>
                 </div>
                 <input 
                   type="number"
@@ -237,19 +217,18 @@ const LoanCalculator: React.FC = () => {
               onClick={calculateLoan}
               className="w-full py-5 bg-indigo-600 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-100 active:scale-[0.98]"
             >
-              <Calculator size={20} /> Hesaplamayı Başlat
+              <Calculator size={20} /> Hesapla
             </button>
           </section>
 
-          <div className="p-6 bg-slate-100 rounded-3xl border border-slate-200">
-            <h4 className="text-xs font-black text-slate-800 mb-2 flex items-center gap-2 uppercase tracking-widest"><Info size={14} /> Bilgilendirme</h4>
-            <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
-              Türkiye'de bankalar genellikle <strong>aylık faiz</strong> oranlarını paylaşır. Eğer yıllık maliyet oranınız varsa "Yıllığa Çevir" butonunu kullanarak giriş yapabilirsiniz. Konut kredilerinde KKDF ve BSMV muafiyeti uygulanmaktadır.
+          <div className="p-8 bg-slate-100 rounded-3xl border border-slate-200 flex items-start gap-4">
+            <AlertTriangle className="text-slate-400 shrink-0" size={24} />
+            <p className="text-[11px] text-slate-500 leading-relaxed italic">
+              <strong>Yasal Uyarı:</strong> Bu araç tarafından sunulan hesaplamalar tahminidir ve sadece bilgi verme amaçlıdır. Banka politikaları, kredi notu veya mevzuat değişiklikleri nedeniyle sapmalar ve yanlışlıklar olabilir. ucretsizaraclar.com.tr bu hesaplamalardan doğabilecek hiçbir yasal sorumluluğu kabul etmez.
             </p>
           </div>
         </div>
 
-        {/* Sonuç Alanı */}
         <div className="lg:col-span-7 space-y-6">
           {result ? (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
@@ -274,49 +253,6 @@ const LoanCalculator: React.FC = () => {
                       <div className="text-3xl font-black">{(result.totalPayment || 0).toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺</div>
                     </div>
                   </div>
-
-                  <div className="space-y-4 mb-8">
-                    <div className="flex justify-between items-center text-sm border-b border-white/5 pb-2">
-                      <span className="opacity-60 italic">Toplam Faiz + Vergiler</span>
-                      <span className="font-bold text-rose-400">+{(result.totalInterest || 0).toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺</span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="opacity-60 italic">Efektif Aylık Faiz Oranı (Vergili)</span>
-                      <span className="font-bold text-indigo-400">%{(result.effectiveRate || 0).toFixed(2)}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Amortisman Tablosu */}
-              <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
-                <div className="p-6 bg-slate-50 border-b border-slate-200 font-black text-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <FileText size={18} className="text-indigo-600" /> Taksit Detayları
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{term} Taksit</span>
-                </div>
-                <div className="overflow-x-auto max-h-[400px] custom-scrollbar">
-                  <table className="w-full text-left text-sm border-collapse">
-                    <thead className="sticky top-0 bg-slate-50 shadow-sm z-20">
-                      <tr className="text-[10px] text-slate-400 font-black uppercase">
-                        <th className="px-6 py-4">Taksit</th>
-                        <th className="px-6 py-4">Ana Para</th>
-                        <th className="px-6 py-4">Faiz+Vergi</th>
-                        <th className="px-6 py-4">Kalan Borç</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {(result.schedule || []).map((s: any) => (
-                        <tr key={s.period} className="hover:bg-indigo-50/30 transition-colors">
-                          <td className="px-6 py-4 font-bold text-slate-900">{s.period}. Ay</td>
-                          <td className="px-6 py-4 text-slate-600">{(s.principal || 0).toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺</td>
-                          <td className="px-6 py-4 text-rose-500 font-medium">{(s.interest || 0).toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺</td>
-                          <td className="px-6 py-4 text-slate-400 text-xs tabular-nums">{(s.remaining || 0).toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
@@ -327,40 +263,12 @@ const LoanCalculator: React.FC = () => {
                </div>
                <h3 className="text-2xl font-black text-slate-900 mb-2">Verileri Girin</h3>
                <p className="text-slate-500 text-sm max-w-sm">
-                 Kredi türünü, tutarını ve faiz oranını girerek detaylı ödeme planınızı hemen görün.
+                 Kredi türünü ve faiz oranını girerek detaylı ödeme planınızı hemen görün.
                </p>
             </div>
           )}
         </div>
       </div>
-
-      <section className="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-sm">
-        <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-3">
-          <ShieldCheck size={32} className="text-indigo-600" /> Kredi & Vergi Rehberi 2026
-        </h2>
-        
-        <div className="grid md:grid-cols-3 gap-10">
-          <div className="space-y-4">
-            <h3 className="font-bold text-slate-900 text-lg">Faiz Oranı Tipleri</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              Bankaların reklamlarında gördüğünüz %3,89 gibi oranlar genellikle <strong>aylık</strong> oranlardır. Bazı finansal kuruluşlar <strong>yıllık maliyet oranını</strong> paylaşabilir. Aracımız her iki tipi de destekler ve hesaplamayı otomatik yapar.
-            </p>
-          </div>
-          <div className="space-y-4">
-            <h3 className="font-bold text-slate-900 text-lg">Konut Kredisi Farkı</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              Konut kredileri vergiden muaftır. Bu, bankanın faizi %2.99 ise, taksitlerinizin tam olarak bu oran üzerinden hesaplanacağı anlamına gelir. Diğer kredilerde ise vergi ek yükü mevcuttur.
-            </p>
-          </div>
-          <div className="space-y-4">
-            <h3 className="font-bold text-slate-900 text-lg">Dosya Masrafı</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              Yasal olarak kredi tutarının %0,5'ini geçemeyen dosya masrafı ve hayat sigortası bu hesaplamaya dahil edilmemiştir. Net geri ödeme için bu küçük kalemleri de göz önünde bulundurunuz.
-            </p>
-          </div>
-        </div>
-      </section>
-
       <AdUnit className="h-32 mt-12" />
     </div>
   );

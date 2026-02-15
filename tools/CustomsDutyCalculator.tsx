@@ -251,7 +251,7 @@ const CustomsDutyCalculator: React.FC = () => {
                         </h4>
                         <div className="space-y-2 text-xs">
                           <div className="flex justify-between">
-                            <span className="opacity-60">Müşavirlik Hizmet Bedeli</span>
+                            <span className="opacity-60">Müşavirlik Hiz Bedeli</span>
                             <span className="font-bold">~{(result.musavirlikUcreti || 0).toLocaleString()} ₺</span>
                           </div>
                           <div className="flex justify-between">
@@ -283,7 +283,7 @@ const CustomsDutyCalculator: React.FC = () => {
                 </div>
               </div>
 
-              {/* Detaylı Masraf Döküm Tablosu (Amortisman Tablosu Benzeri) */}
+              {/* Detaylı Masraf Döküm Tablosu */}
               <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
                 <div className="p-6 bg-slate-50 border-b border-slate-200 font-black text-slate-800 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -353,10 +353,10 @@ const CustomsDutyCalculator: React.FC = () => {
                 </div>
               </div>
 
-              <div className="bg-amber-50 border border-amber-200 p-6 rounded-[2.5rem] flex items-start gap-4">
-                <AlertTriangle className="text-amber-600 shrink-0" size={24} />
-                <p className="text-xs text-amber-900 leading-relaxed">
-                  <strong>Dikkat:</strong> 2026 yılındaki yasal değişiklikler nedeniyle, düşük fiyatlı ürünlerde çekim masrafları ürün fiyatından çok daha yüksek çıkabilmektedir. Yukarıdaki rakamlar piyasa ortalaması projeksiyon verileridir.
+              <div className="bg-amber-50 border border-amber-200 p-8 rounded-[2.5rem] flex items-start gap-4">
+                <AlertTriangle className="text-amber-600 shrink-0" size={32} />
+                <p className="text-xs text-amber-900 leading-relaxed italic">
+                  <strong>Yasal Uyarı:</strong> Bu hesaplamalar Şubat 2026 yasal değişiklikleri ve piyasa ortalamaları baz alınarak yapılan tahminlerdir. Bilgi verme amaçlıdır, sapmalar ve yanlışlıklar olabilir. ucretsizaraclar.com.tr bu hesaplamalardan doğabilecek hiçbir yasal sorumluluğu kabul etmez.
                 </p>
               </div>
 
@@ -374,28 +374,6 @@ const CustomsDutyCalculator: React.FC = () => {
           )}
         </div>
       </div>
-
-      <section className="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-sm">
-        <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-3">
-          <Search size={32} className="text-indigo-600" /> Masraf Kalemleri Rehberi
-        </h2>
-        
-        <div className="grid md:grid-cols-2 gap-10">
-          <div className="space-y-4">
-            <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2"><Scale size={20} className="text-indigo-600"/> Müşavirlik & Noter</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              Ticari ithalat rejiminde paketinizi sizin adınıza bir profesyonelin çekmesi şarttır. Gümrük müşaviri için noter onaylı bir vekaletname çıkartmanız gerekir. Bu masraflar tek seferlik veya her ithalat başına değişebilir.
-            </p>
-          </div>
-          <div className="space-y-4">
-            <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2"><Landmark size={20} className="text-indigo-600"/> Ardiye & Ordino</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              Ardiye, paketinizin gümrüklü sahada kaldığı her gün için ödenen kira bedelidir. Ordino ise yükün teslim belgesidir. 2026 şartlarında bu kalemler lojistik firmaları tarafından sabit/günlük bazda fatura edilir.
-            </p>
-          </div>
-        </div>
-      </section>
-
       <AdUnit className="h-32 mt-12" />
     </div>
   );

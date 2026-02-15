@@ -1,22 +1,39 @@
 
 import { GoogleGenAI } from "@google/genai";
 
+// API anahtarını kontrol eden yardımcı fonksiyon
+const getAIClient = () => {
+  const apiKey = process.env.API_KEY;
+  if (!apiKey || apiKey === 'undefined') {
+    throw new Error("API_KEY bulunamadı. Lütfen ortam değişkenlerini kontrol edin.");
+  }
+  return new GoogleGenAI({ apiKey });
+};
+
 export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash-preview'): Promise<string> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
+    const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: modelName,
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: prompt, // Basit metinler için en güvenli yapı
       config: { 
         temperature: 0.7,
         topK: 40,
         topP: 0.95,
       }
     });
-    return response.text || "Bir yanıt oluşturulamadı.";
-  } catch (error) {
+    
+    if (!response.text) {
+      throw new Error("Modelden boş yanıt döndü.");
+    }
+    
+    return response.text;
+  } catch (error: any) {
     console.error("AI Error:", error);
-    return "Hizmet şu an kullanılamıyor, lütfen API anahtarınızı kontrol edin.";
+    if (error.message?.includes("API_KEY")) {
+      return "Hata: Sunucu tarafında API Anahtarı yapılandırılmamış.";
+    }
+    return "Yapay zeka şu an yoğun veya yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.";
   }
 };
 
@@ -30,9 +47,9 @@ export const analyzeSpread = async (asset: string, marketPrice: number, banks: a
 
     GÖREVİN:
     1. Hangi bankanın makas aralığı (spread) yatırımcı için en avantajlı?
-    2. Mevcut makas oranları (Türkiye piyasası standartlarına göre %0.5 - %2 arası normal kabul edilir) makul mü yoksa çok mu yüksek?
-    3. Kullanıcıya bu bankalardan işlem yaparken neye dikkat etmesi gerektiğini (mesai saatleri, makasın açılması vb.) 3 kısa madde ile açıkla.
-    4. Dil: Türkçe. Yanıt profesyonel, kısa ve öz olsun. Markdown kullan.
+    2. Mevcut makas oranları makul mü yoksa çok mu yüksek?
+    3. Kullanıcıya bu bankalardan işlem yaparken neye dikkat etmesi gerektiğini 3 kısa madde ile açıkla.
+    Dil: Türkçe. Yanıt profesyonel, kısa ve öz olsun. Markdown kullan.
   `;
   return callAI(prompt);
 };
@@ -68,22 +85,8 @@ export const summarizeText = (text: string, config: SummarizeConfig) => {
 
 export const generateRecipe = (ingredients?: string) => {
   const prompt = ingredients?.trim() 
-    ? `
-      Sen profesyonel bir şefsin. Kullanıcının elinde şu malzemeler var: "${ingredients}". 
-      GÖREVİN:
-      1. Bu malzemeleri merkeze alan, israfı önleyen ve eldeki malzemelerle yapılabilecek en lezzetli "optimizasyonu" sağlayan bir tarif oluştur.
-      2. Mümkünse eldeki tüm malzemeleri kullanmaya çalış ama ana malzemelere sadık kal.
-      3. Tuz, su, yağ gibi her evde bulunabilecek temel malzemeleri kullanabilirsin.
-      4. Tarifin bir "İsmi", "Hazırlanma Süresi", "Malzeme Listesi" ve "Adım Adım Hazırlanışı" olsun.
-      5. Sonuç Markdown formatında olsun ve iştah açıcı bir dille yazılsın.
-      6. Dil: Türkçe.
-    `
-    : `
-      Bana rastgele, popüler ve herkesin evinde yapabileceği lezzetli bir yemek tarifi ver.
-      Tarifin bir "İsmi", "Zorluk Derecesi", "Malzeme Listesi" ve "Hazırlanışı" olsun.
-      Format: Markdown.
-      Dil: Türkçe.
-    `;
+    ? `Sen profesyonel bir şefsin. Elimizdeki malzemeler: "${ingredients}". Bu malzemelerle yapılabilecek en lezzetli tarifi ver. Format: Markdown. Dil: Türkçe.`
+    : `Bana rastgele, popüler ve herkesin evinde yapabileceği lezzetli bir yemek tarifi ver. Format: Markdown. Dil: Türkçe.`;
   
   return callAI(prompt);
 };
@@ -94,53 +97,28 @@ export interface CVConfig {
 }
 
 export const generateCV = (info: string, config: CVConfig) => {
-  const stylePrompts = {
-    modern: 'Modern, temiz ve çarpıcı bir düzen kullan. Bölümleri emojilerle veya belirgin başlıklarla ayır.',
-    classic: 'Geleneksel, ciddi ve kurumsal bir düzen kullan. Standart CV formatına sadık kal.',
-    minimalist: 'Sade, az ve öz bir tasarım kullan. Gereksiz detaylardan kaçın, profesyonelliğe odaklan.'
-  };
-
-  const tonePrompts = {
-    professional: 'Resmi, profesyonel ve kurumsal bir dil kullan.',
-    confident: 'Başarıları vurgulayan, iddialı ve güçlü bir liderlik dili kullan.',
-    humble: 'Gelişime açık, işbirliğine yatkın ve dengeli bir dil kullan.'
-  };
-
-  const prompt = `
-    Aşağıdaki bilgilere dayanarak mükemmel bir özgeçmiş (CV) taslağı oluştur:
-    
-    Tasarım Tarzı: ${stylePrompts[config.style]}
-    Anlatım Tonu: ${tonePrompts[config.tone]}
-    Dil: Türkçe
-    Format: Markdown (Başlıklar, listeler ve kalın yazılarla zenginleştirilmiş)
-
-    Kullanıcı Bilgileri:
-    ${info}
-
-    Lütfen profesyonel bir özet (summary), iş deneyimi, eğitim ve yetenekler bölümlerini mutlaka dahil et.
-  `;
-
+  const prompt = `Aşağıdaki bilgilere dayanarak mükemmel bir özgeçmiş (CV) taslağı oluştur. Stil: ${config.style}, Ton: ${config.tone}. Dil: Türkçe. Format: Markdown.\n\nBilgiler:\n${info}`;
   return callAI(prompt, 'gemini-3-pro-preview');
 };
 
 export const generateExcelFormula = (desc: string) => 
-  callAI(`Aşağıdaki açıklama için uygun Excel veya Google Sheets formülünü oluştur: ${desc}`);
+  callAI(`Aşağıdaki açıklama için uygun Excel veya Google Sheets formülünü sadece formül olarak oluştur: ${desc}`);
 
 export const generateImage = async (prompt: string): Promise<string | null> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
+    const ai = getAIClient();
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: { parts: [{ text: prompt }] }
     });
     
-    const candidates = response.candidates || [];
-    for (const candidate of candidates) {
-      const parts = candidate.content?.parts || [];
-      for (const part of parts) {
-        if (part.inlineData) {
-          return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
-        }
+    // Güvenli parça arama
+    const candidate = response.candidates?.[0];
+    const parts = candidate?.content?.parts || [];
+    
+    for (const part of parts) {
+      if (part.inlineData) {
+        return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
       }
     }
     return null;

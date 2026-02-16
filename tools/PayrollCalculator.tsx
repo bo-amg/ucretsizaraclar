@@ -122,7 +122,6 @@ const PayrollCalculator: React.FC = () => {
       let currentBrut = calcMode === 'G2N' ? inputVal : 0;
       
       if (calcMode === 'N2G') {
-        // Net maaşın her ay sabit kaldığı varsayımıyla brüt hesaplanır
         currentBrut = findGrossFromNet(inputVal, kumulatifMatrah, kumulatifAsgariMatrah);
       }
 
@@ -148,7 +147,7 @@ const PayrollCalculator: React.FC = () => {
       toplamNet += monthData.netMaas;
       toplamBrut += currentBrut;
       toplamVergi += (monthData.gv + monthData.dv);
-      toplamSGK += (currentBrut * 0.15); // SGK + İşsizlik
+      toplamSGK += (currentBrut * 0.15); 
       kumulatifMatrah += monthData.matrah;
       kumulatifAsgariMatrah += monthData.asgariMatrah;
     }
@@ -177,13 +176,11 @@ const PayrollCalculator: React.FC = () => {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
-        {/* Giriş Paneli */}
         <aside className="lg:col-span-4 space-y-6">
           <section className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl" aria-labelledby="calc-title">
             <h2 id="calc-title" className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6">Hesaplama Tercihleri</h2>
             
             <div className="space-y-6">
-              {/* Sekme Seçimi */}
               <div className="flex p-1 bg-slate-100 rounded-2xl">
                 <button 
                   onClick={() => setCalcMode('G2N')}
@@ -227,7 +224,6 @@ const PayrollCalculator: React.FC = () => {
           <AdUnit className="h-64" />
         </aside>
 
-        {/* Sonuç Alanı */}
         <section className="lg:col-span-8 space-y-6">
           {summary && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-in fade-in slide-in-from-top-4">
@@ -311,7 +307,6 @@ const PayrollCalculator: React.FC = () => {
         </section>
       </div>
 
-      {/* Yasal Uyarı Blok */}
       <div className="p-8 bg-amber-50 rounded-[2.5rem] border-2 border-amber-200 shadow-sm shadow-amber-100 flex items-start gap-5 mb-16">
         <AlertTriangle className="text-amber-600 shrink-0 mt-1" size={28} />
         <div className="space-y-2">
@@ -325,7 +320,7 @@ const PayrollCalculator: React.FC = () => {
       <section className="space-y-16 mb-20 prose prose-slate max-w-none">
         <div className="bg-white p-10 md:p-16 rounded-[3.5rem] border border-slate-200 shadow-sm">
           <h2 className="text-3xl font-black text-slate-900 mb-10 flex items-center gap-4">
-            <Info size={36} className="text-indigo-600" /> Sıkça Sorulan Sorular
+            <Info size={36} className="text-indigo-600" /> Sıkça Sorulan Sosrular
           </h2>
           <div className="grid md:grid-cols-2 gap-10 not-prose">
             <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
@@ -349,6 +344,47 @@ const PayrollCalculator: React.FC = () => {
       </section>
 
       <AdUnit className="h-32" />
+
+      {/* SEO Optimizasyon Metni */}
+      <section className="mt-16 pt-16 border-t border-slate-200 space-y-12">
+        <div className="grid md:grid-cols-2 gap-12">
+          <div className="prose prose-slate max-w-none">
+            <h2 className="text-2xl font-black text-slate-900 mb-6">2026 Maaş Hesaplama Robotu: Geleceğin Bordro Analizi</h2>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              Çalışanlar ve işverenler için <strong>2026 maaş hesaplama</strong> işlemleri, değişen vergi mevzuatı ve ekonomik parametreler nedeniyle her geçen gün daha karmaşık bir hal alıyor. <strong>ucretsizaraclar.com.tr</strong> olarak geliştirdiğimiz ileri teknoloji bordro robotu, en güncel <strong>gelir vergisi dilimleri</strong> ve SGK kesintilerini baz alarak saniyeler içinde net sonuçlar üretir. 
+              <br/><br/>
+              <strong>Brütten nete maaş hesaplama</strong> işlemini yaparken sadece temel rakamları değil, aynı zamanda <strong>asgari ücret vergi istisnası</strong> gibi kritik kalemleri de hesaba katıyoruz. Bu sayede, yılın hangi ayında hangi vergi dilimine gireceğinizi ve elinize geçecek net tutarın aylar bazında nasıl değişeceğini şeffaf bir şekilde görebilirsiniz.
+            </p>
+          </div>
+          <div className="prose prose-slate max-w-none">
+            <h2 className="text-2xl font-black text-slate-900 mb-6">Brütten Nete ve Netten Brüte: Farkı Anlamak</h2>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              İş dünyasında en çok karıştırılan kavramların başında <strong>brüt maaş</strong> ve <strong>net maaş</strong> farkı gelmektedir. Brüt maaş, işçinin emeği karşılığında işverenin ödediği toplam bedeldir ancak bu bedelden SGK işçi payı (%14) ve işsizlik sigortası fonu (%1) kesintileri yapıldıktan sonra kalan tutar üzerinden gelir vergisi hesaplanır.
+              <br/><br/>
+              Platformumuzda yer alan <strong>netten brüte maaş hesaplama</strong> aracı, özellikle net ücret üzerinden anlaşma sağlayan çalışanların, işverene olan toplam maliyetini ve brüt karşılığını bulmak için tasarlanmıştır. <strong>2026 bordro simülatörü</strong> ile kümülatif vergi matrahınızı takip ederek, yıl sonuna doğru maaşınızda oluşabilecek olası düşüşleri önceden öngörebilir ve finansal planlamanızı buna göre yapabilirsiniz.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12">
+          <div className="prose prose-slate max-w-none">
+            <h2 className="text-2xl font-black text-slate-900 mb-6">2026 Vergi Dilimleri ve Maaş Kesintileri Hakkında</h2>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              Maaşınızı hesaplarken en büyük değişken <strong>2026 vergi dilimleri</strong> olarak karşımıza çıkar. Türkiye'de artan oranlı vergi sistemi uygulandığı için, yıl içindeki toplam kazancınız arttıkça ödediğiniz vergi oranı %15'ten başlayarak %40'a kadar çıkabilmektedir. <strong>Maaş robotu</strong> algoritlamız, Ocak ayından Aralık ayına kadar her ayın kümülatif toplamını hafızasında tutarak doğru dilimden kesinti yapar.
+              <br/><br/>
+              Bunun yanı sıra, <strong>damga vergisi</strong> ve asgari ücrete kadar olan gelir vergisi muafiyetleri, bordronuzun alt kısmındaki "ödenecek net tutarı" doğrudan etkiler. <strong>ucretsizaraclar.com.tr</strong> finans araçları, en karmaşık matematiksel formülleri sizin için basit bir kullanıcı arayüzüne indirger ve tamamen <strong>ücretsiz maaş hesaplama</strong> hizmeti sunar.
+            </p>
+          </div>
+          <div className="prose prose-slate max-w-none">
+            <h2 className="text-2xl font-black text-slate-900 mb-6">Neden ucretsizaraclar.com.tr Tercih Edilmeli?</h2>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              İnternet üzerinde birçok <strong>bordro hesaplama aracı</strong> bulunsa da, birçoğu güncel mevzuatı takip etmekte geç kalmakta veya karmaşık detayları atlamaktadır. Biz, 2026 yılına özel olarak güncellenen algoritmalarımızla, en ufak bir kuruş hatasına yer vermeden analiz yapıyoruz. <strong>Mobil uyumlu maaş hesaplama</strong> deneyimimizle, istediğiniz her yerden borro dökümünüze ulaşabilirsiniz.
+              <br/><br/>
+              Kullanıcı dostu yapımız, hızlı işlem kapasitemiz ve <strong>güvenilir finansal araçlar</strong> vizyonumuzla, Türkiye'nin dijital hesaplama merkezi olmayı hedefliyoruz. Sadece maaş değil; gümrük vergisi, kredi taksiti ve tazminat gibi birçok alanda da yanınızdayız. Geleceğin dijital asistanı ile tanışın ve finansal kararlarınızı veriye dayalı alın.
+            </p>
+          </div>
+        </div>
+      </section>
     </article>
   );
 };

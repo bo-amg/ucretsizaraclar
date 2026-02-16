@@ -2,8 +2,7 @@
 import React from 'react';
 
 export enum ToolCategory {
-  AI = 'Yapay Zeka',
-  OFFICE = 'Ofis & Veri',
+  OFFICE = 'Ofis & Finans',
   TEXT = 'Metin Araçları',
   DEV = 'Yazılımcı Araçları',
   UNIT = 'Dönüştürücüler',

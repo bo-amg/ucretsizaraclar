@@ -5,8 +5,8 @@ export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash
   const apiKey = process.env.API_KEY;
 
   if (!apiKey || apiKey.length < 10) {
-    console.error("HATA: API Anahtarı eksik veya çok kısa. build sırasında enjekte edilememiş olabilir.");
-    return "Hata: API Anahtarı sunucu tarafından tanınmadı. Lütfen yönetici ile iletişime geçin.";
+    console.error("HATA: API Anahtarı eksik veya çok kısa.");
+    return "Hata: Yapay zeka servis anahtarı tanımlanmadı. Lütfen API anahtarınızı kontrol edin.";
   }
 
   try {
@@ -29,29 +29,11 @@ export const callAI = async (prompt: string, modelName: string = 'gemini-3-flash
     return response.text;
   } catch (error: any) {
     console.error("AI Service Detail Error:", error);
-    // Spesifik API hatalarını kullanıcıya daha anlamlı gösterelim
     if (error.message?.includes("API key not valid")) {
-      return "Hata: Geçersiz API anahtarı. Lütfen anahtarı kontrol edin.";
+      return "Hata: Geçersiz API anahtarı. Lütfen anahtarın doğruluğunu ve kotalarını kontrol edin.";
     }
     return "Yapay zeka şu an yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.";
   }
-};
-
-export const analyzeSpread = async (asset: string, marketPrice: number, banks: any[]) => {
-  const bankData = banks.map(b => `${b.name}: Alış ${b.buy}, Satış ${b.sell}, Makas %${b.spreadPercent}`).join('\n');
-  const prompt = `
-    Sen bir finans analistisin. Kullanıcı şu anki ${asset} piyasasını takip ediyor.
-    Piyasa (Ons/Spot) Fiyatı: ${marketPrice}
-    Kullanıcının girdiği banka verileri:
-    ${bankData}
-
-    GÖREVİN:
-    1. Hangi bankanın makas aralığı (spread) yatırımcı için en avantajlı?
-    2. Mevcut makas oranları makul mü yoksa çok mu yüksek?
-    3. Kullanıcıya bu bankalardan işlem yaparken neye dikkat etmesi gerektiğini 3 kısa madde ile açıkla.
-    Dil: Türkçe. Yanıt profesyonel, kısa ve öz olsun. Markdown kullan.
-  `;
-  return callAI(prompt);
 };
 
 export interface SummarizeConfig {
